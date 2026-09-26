@@ -4955,75 +4955,171 @@
                 message.textContent = `"${goalName}" would take approximately ${months} month(s) at the entered contribution. This is an educational estimate.`;
             }
         }
+/* EXPENSES */
+let expenses = [];
 
-        /* EXPENSES */
-        let expenses = [];
-        function addExpense() {
-            const date = document.getElementById("expenseDate").value;
-            const category = document.getElementById("expenseCategory").value;
-            const description = document.getElementById("expenseDescription").value.trim();
-            const amount = Number(document.getElementById("expenseAmount").value);
+function addExpense() {
+    const date = document.getElementById("expenseDate").value;
+    const category = document.getElementById("expenseCategory").value;
+    const description = document.getElementById("expenseDescription").value.trim();
+    const amount = Number(document.getElementById("expenseAmount").value);
 
-            if (!date || !category || !description || !amount || amount <= 0) {
-                showToast("Please complete all expense fields.");
-                return;
-            }
-            expenses.push({ id: Date.now(), date, category, description, amount });
-            renderExpenses();
-            document.getElementById("expenseDescription").value = "";
-            document.getElementById("expenseAmount").value = "";
-            document.getElementById("expenseCategory").value = "";
-        }
-        function renderExpenses() {
-            const body = document.getElementById("expenseTableBody");
-            body.innerHTML = "";
-            let total = 0;
-            if (expenses.length === 0) {
-                body.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px;">No expense entries yet.</td></tr>`;
-            }
-            expenses.forEach(expense => {
-                total += expense.amount;
-                const row = document.createElement("tr");
-                row.innerHTML = `
+    if (!date || !category || !description || !amount || amount <= 0) {
+        showToast("Please complete all expense fields.");
+        return;
+    }
+
+    expenses.push({
+        id: Date.now() + Math.random(),
+        date,
+        category,
+        description,
+        amount
+    });
+
+    renderExpenses();
+
+    document.getElementById("expenseDescription").value = "";
+    document.getElementById("expenseAmount").value = "";
+    document.getElementById("expenseCategory").value = "";
+}
+
+function renderExpenses() {
+    const body = document.getElementById("expenseTableBody");
+
+    body.innerHTML = "";
+
+    let total = 0;
+
+    if (expenses.length === 0) {
+        body.innerHTML = `
+            <tr>
+                <td colspan="5"
+                    style="text-align:center;color:var(--muted);padding:30px;">
+                    No expense entries yet.
+                </td>
+            </tr>
+        `;
+
+        document.getElementById("expenseTotal").textContent = money(0);
+        return;
+    }
+
+    expenses.forEach(expense => {
+        total += Number(expense.amount);
+
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
             <td>${expense.date}</td>
-            <td>${expense.category}</td>
+            <td>${escapeHTML(expense.category)}</td>
             <td>${escapeHTML(expense.description)}</td>
             <td>${money(expense.amount)}</td>
             <td>
-                <button class="table-action" onclick="editExpense(${expense.id})" title="Edit">
+                <button
+                    type="button"
+                    class="table-action"
+                    data-action="edit"
+                    data-id="${expense.id}"
+                    title="Edit"
+                    aria-label="Edit expense">
                     <i class="fa-solid fa-pen"></i>
                 </button>
-                <button class="table-action" onclick="deleteExpense(${expense.id})" title="Remove">
+
+                <button
+                    type="button"
+                    class="table-action"
+                    data-action="delete"
+                    data-id="${expense.id}"
+                    title="Remove"
+                    aria-label="Delete expense">
                     <i class="fa-solid fa-trash"></i>
                 </button>
             </td>
         `;
-                body.appendChild(row);
-            });
-            document.getElementById("expenseTotal").textContent = money(total);
-        }
-        function editExpense(id) {
-            const expense = expenses.find(item => item.id === id);
-            if (!expense) return;
-            document.getElementById("expenseDate").value = expense.date;
-            document.getElementById("expenseCategory").value = expense.category;
-            document.getElementById("expenseDescription").value = expense.description;
-            document.getElementById("expenseAmount").value = expense.amount;
-            expenses = expenses.filter(item => item.id !== id);
-            renderExpenses();
-            showToast("Expense loaded for editing.");
-        }
-        function deleteExpense(id) {
-            expenses = expenses.filter(item => item.id !== id);
-            renderExpenses();
-            showToast("Expense removed.");
-        }
-        function escapeHTML(text) {
-            const div = document.createElement("div");
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        renderExpenses();
+
+        body.appendChild(row);
+    });
+
+    document.getElementById("expenseTotal").textContent = money(total);
+}
+
+
+/* EDIT + DELETE EVENT HANDLER */
+document.getElementById("expenseTableBody").addEventListener("click", function(e) {
+
+    const button = e.target.closest(".table-action");
+
+    if (!button) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const id = Number(button.dataset.id);
+    const action = button.dataset.action;
+
+    if (action === "edit") {
+        editExpense(id);
+    }
+
+    if (action === "delete") {
+        deleteExpense(id);
+    }
+});
+
+
+function editExpense(id) {
+
+    const expense = expenses.find(item => Number(item.id) === Number(id));
+
+    if (!expense) {
+        showToast("Expense not found.");
+        return;
+    }
+
+    document.getElementById("expenseDate").value = expense.date;
+    document.getElementById("expenseCategory").value = expense.category;
+    document.getElementById("expenseDescription").value = expense.description;
+    document.getElementById("expenseAmount").value = expense.amount;
+
+    expenses = expenses.filter(
+        item => Number(item.id) !== Number(id)
+    );
+
+    renderExpenses();
+
+    showToast("Expense loaded for editing.");
+}
+
+
+function deleteExpense(id) {
+
+    const expense = expenses.find(
+        item => Number(item.id) === Number(id)
+    );
+
+    if (!expense) {
+        showToast("Expense not found.");
+        return;
+    }
+
+    expenses = expenses.filter(
+        item => Number(item.id) !== Number(id)
+    );
+
+    renderExpenses();
+
+    showToast("Expense removed.");
+}
+
+
+function escapeHTML(text) {
+    const div = document.createElement("div");
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+renderExpenses();
 
         /* MISTAKES */
         function toggleMistake(header) {
