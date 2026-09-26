@@ -1,0 +1,2368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="BudgetBasics — Finance Management Project. Aptech Project Assignment.">
+<title>BudgetBasics — Finance Management Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--navy:#0a1220;--navy-2:#0f1a2d;--navy-3:#152340;--cream:#f9f5ec;--cream-2:#efe7d8;--white:#ffffff;--gold:#c8a24a;--gold-light:#f2d693;--gold-soft:#f8eccd;--gold-deep:#a8802e;--text:#131c2e;--muted:#6b7484;--green:#3d8f70;--red:#c96b65;--border:rgba(10,18,32,.09);--border-strong:rgba(10,18,32,.16);--shadow-sm:0 12px 34px rgba(10,18,32,.06);--shadow:0 28px 70px rgba(10,18,32,.10);--shadow-dark:0 28px 70px rgba(0,0,0,.34);--grad-gold:linear-gradient(135deg,#f7e2b0 0%,#c8a24a 52%,#a8802e 100%);--grad-navy:linear-gradient(150deg,#152340 0%,#0a1220 72%);--radius-xl:34px;--radius-lg:24px;--radius-md:16px;--ease:cubic-bezier(.2,.8,.2,1);--transition:.32s var(--ease);--ease-bounce:cubic-bezier(.34,1.56,.64,1);}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:"DM Sans",sans-serif;background:var(--cream);color:var(--text);line-height:1.6;overflow-x:hidden;transition:background .5s var(--ease),color .5s var(--ease);-webkit-font-smoothing:antialiased;position:relative}
+body.dark{--cream:#070d18;--cream-2:#0d1526;--white:#101a2c;--text:#f3efe6;--muted:#9aa4b5;--border:rgba(255,255,255,.085);--border-strong:rgba(255,255,255,.16);--shadow-sm:0 12px 34px rgba(0,0,0,.35);--shadow:0 28px 70px rgba(0,0,0,.45);background:#070d18}
+body.no-scroll{overflow:hidden}
+.transition-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:10000;display:flex;flex-direction:column;pointer-events:none}
+.transition-overlay.hidden{display:none}
+.ribbon-half{width:100%;height:50%;background:var(--grad-navy);transition:transform 1.2s cubic-bezier(0.77,0,0.18,1);display:flex;align-items:center;justify-content:center;font-size:1.7rem;font-weight:bold;color:var(--gold-light);text-shadow:0 0 20px rgba(200,162,74,.5);font-family:"Playfair Display",serif;letter-spacing:1px;text-align:center;padding:0 20px}
+.ribbon-top{border-bottom:2px solid var(--gold)}
+.ribbon-bottom{border-top:2px solid var(--gold)}
+.transition-overlay.fold .ribbon-top{transform:translateY(-100%)}
+.transition-overlay.fold .ribbon-bottom{transform:translateY(100%)}
+.welcome-message{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10001;background:rgba(10,18,32,.85);backdrop-filter:blur(14px);padding:1rem 2.5rem;border-radius:60px;white-space:nowrap;font-size:1.2rem;font-weight:600;color:var(--gold-light);border:1px solid var(--gold);transition:opacity .5s ease;box-shadow:0 0 50px rgba(200,162,74,.25);font-family:"Playfair Display",serif}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(circle at 15% 20%,rgba(200,162,74,.09),transparent 35%),radial-gradient(circle at 85% 75%,rgba(200,162,74,.07),transparent 40%),radial-gradient(circle at 50% 50%,rgba(200,162,74,.03),transparent 60%);animation:ambientShift 22s ease-in-out infinite alternate}
+@keyframes ambientShift{0%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(-3%,2%,0) scale(1.06)}100%{transform:translate3d(2%,-2%,0) scale(1.02)}}
+*:focus{outline:none}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--gold);outline-offset:3px;border-radius:8px}
+.skip-link{position:absolute;top:-60px;left:14px;z-index:4000;padding:12px 18px;background:var(--navy);color:#fff;border-radius:0 0 12px 12px;font-size:13px;font-weight:800;transition:top .3s var(--ease)}
+.skip-link:focus{top:0}
+::selection{background:rgba(200,162,74,.32);color:var(--text)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#c8a24a,#8f6d26);border-radius:20px;border:2px solid transparent;background-clip:padding-box}
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:2600;background:transparent;pointer-events:none}
+.scroll-progress span{display:block;height:100%;width:0%;background:var(--grad-gold);box-shadow:0 0 18px rgba(200,162,74,.75);transition:width .1s linear}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font-family:inherit}
+button{cursor:pointer}
+img{max-width:100%}
+.container{width:min(1180px,92%);margin:auto;position:relative;z-index:1}
+.section{padding:110px 0;position:relative}
+.section-head{max-width:720px;margin-bottom:50px}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;color:#96702a;font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px}
+body.dark .eyebrow{color:var(--gold-light)}
+.eyebrow::before{content:"";width:28px;height:1px;background:var(--gold);transition:width .4s var(--ease)}
+.section-head:hover .eyebrow::before{width:46px}
+.section-title{font-family:"Playfair Display",serif;font-size:clamp(38px,5vw,62px);line-height:1.05;letter-spacing:-1.5px;margin-bottom:18px}
+.section-title span{background:var(--grad-gold);background-size:200% 200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold);animation:shineText 6s ease-in-out infinite}
+@keyframes shineText{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.section-subtitle{color:var(--muted);font-size:16px;max-width:650px}
+.page{display:none;animation:pageIn .7s var(--ease)}
+.page.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(34px);transition:opacity .9s var(--ease),transform .9s var(--ease);will-change:opacity,transform}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.40s}
+/* TOP STRIP */
+.top-strip{background:linear-gradient(90deg,#0a1220,#152340 55%,#0a1220);background-size:200% 100%;color:#fff;height:42px;display:flex;align-items:center;font-size:12px;border-bottom:1px solid rgba(255,255,255,.05);animation:stripShift 12s linear infinite;position:relative;z-index:2}
+@keyframes stripShift{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+.top-strip-inner{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.top-left,.top-right{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.top-item{display:flex;align-items:center;gap:7px;opacity:.88;transition:opacity .3s var(--ease),transform .3s var(--ease)}
+.top-item i{color:var(--gold-light);transition:transform .4s var(--ease)}
+.top-item:hover{opacity:1;transform:translateY(-1px)}
+.top-item:hover i{transform:scale(1.2) rotate(-8deg)}
+.live-badge{display:flex;align-items:center;gap:8px;background:rgba(200,162,74,.15);padding:4px 12px;border-radius:40px;border:1px solid rgba(200,162,74,.3);transition:all .3s var(--ease)}
+.live-badge:hover{background:rgba(200,162,74,.25);transform:scale(1.04)}
+.live-dot{width:8px;height:8px;background:#55a77e;border-radius:50%;animation:pulseGreen 1.5s infinite}
+@keyframes pulseGreen{0%{opacity:.5;transform:scale(.95);box-shadow:0 0 0 0 rgba(85,167,126,.5)}100%{opacity:1;transform:scale(1.2);box-shadow:0 0 0 6px rgba(85,167,126,0)}}
+.live-count{font-weight:800;color:var(--gold-light);font-size:14px}
+/* NAVBAR */
+.nav-wrap{position:sticky;top:14px;z-index:1000;margin-top:14px}
+.navbar{width:min(1320px,96%);margin:auto;min-height:74px;padding:9px 12px 9px 20px;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,.78);border:1px solid rgba(10,18,32,.09);border-radius:22px;box-shadow:0 18px 55px rgba(10,18,32,.10),inset 0 1px 0 rgba(255,255,255,.9);backdrop-filter:blur(22px) saturate(160%);-webkit-backdrop-filter:blur(22px) saturate(160%);transition:background .5s var(--ease),border-color .5s var(--ease),box-shadow .4s var(--ease);position:relative;overflow:visible}
+.navbar::after{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(200,162,74,.08),transparent);animation:navSheen 8s ease-in-out infinite;pointer-events:none;border-radius:22px}
+@keyframes navSheen{0%,100%{left:-100%}50%{left:100%}}
+body.dark .navbar{background:rgba(10,18,32,.78);border-color:rgba(255,255,255,.08);box-shadow:var(--shadow-dark),inset 0 1px 0 rgba(255,255,255,.05)}
+.brand{display:flex;align-items:center;gap:11px;min-width:max-content;position:relative;z-index:2;transition:transform .3s var(--ease-bounce);cursor:pointer}
+.brand:hover{transform:translateY(-2px) scale(1.02)}
+.brand-mark{display:flex;align-items:center;justify-content:center;overflow:hidden;width:45px;height:45px;border-radius:14px;background:var(--grad-gold);box-shadow:0 10px 24px rgba(168,128,46,.32);transition:transform .45s var(--ease-bounce),box-shadow .4s var(--ease)}
+.brand:hover .brand-mark{transform:rotate(-8deg) scale(1.12);box-shadow:0 14px 34px rgba(168,128,46,.5)}
+.brand-mark.spin{transform:rotate(720deg) scale(1.15) !important;transition:transform 0.9s cubic-bezier(0.68,-0.55,0.27,1.55)}
+.brand-name{font-size:17px;font-weight:800;letter-spacing:-.5px;transition:color .3s var(--ease)}
+.brand-name small{display:block;font-size:9px;color:var(--muted);letter-spacing:1.6px;text-transform:uppercase;margin-top:-2px}
+.nav-links{display:flex;align-items:center;gap:2px;position:relative;z-index:2;flex:1;justify-content:center;min-width:0}
+.nav-link{position:relative;border:0;background:transparent;padding:10px 9px;border-radius:12px;color:#5f6774;font-size:11.5px;font-weight:700;transition:var(--transition);white-space:nowrap}
+.nav-link::before{content:"";position:absolute;left:10px;right:10px;bottom:5px;height:2px;border-radius:2px;background:var(--grad-gold);transform:scaleX(0);transform-origin:left center;transition:transform .38s var(--ease);pointer-events:none}
+.nav-link:hover::before{transform:scaleX(1)}
+body.dark .nav-link{color:#b8c0cd}
+.nav-link:hover{color:var(--navy);background:rgba(200,162,74,.12);transform:translateY(-2px)}
+body.dark .nav-link:hover{color:#fff}
+.nav-link.active{color:#3a2b0c;background:var(--gold-soft);box-shadow:0 6px 18px rgba(200,162,74,.22)}
+body.dark .nav-link.active{color:#f6e2b0;background:rgba(200,162,74,.16)}
+.nav-link.active::after{content:"";position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:4px;height:4px;background:var(--gold);border-radius:50%;animation:dotPulse 2.4s ease-in-out infinite}
+@keyframes dotPulse{0%,100%{transform:translateX(-50%) scale(1);opacity:1}50%{transform:translateX(-50%) scale(1.4);opacity:.7}}
+/* HIDE Contact link on desktop */
+.nav-link[data-page="contact"]{display:none}
+.nav-actions{display:flex;align-items:center;gap:8px;position:relative;z-index:2;flex-shrink:0}
+.icon-btn{width:42px;height:42px;border:1px solid var(--border);background:var(--white);border-radius:13px;display:grid;place-items:center;color:var(--text);transition:all .35s var(--ease-bounce)}
+.icon-btn i{transition:transform .5s var(--ease)}
+.icon-btn:hover{transform:translateY(-3px) scale(1.06);border-color:var(--gold);color:var(--gold-deep);box-shadow:0 12px 28px rgba(200,162,74,.25)}
+.icon-btn:hover i{transform:rotate(35deg) scale(1.15)}
+.nav-cta{border:0;padding:12px 18px;border-radius:13px;background:var(--navy);color:#fff;font-size:13px;font-weight:800;position:relative;overflow:hidden;transition:all .35s var(--ease-bounce);flex-shrink:0}
+.nav-cta::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.28) 50%,transparent 70%);transform:translateX(-140%);transition:transform .8s var(--ease)}
+.nav-cta:hover::after{transform:translateX(140%)}
+.nav-cta:hover{background:var(--gold-deep);transform:translateY(-3px) scale(1.04);box-shadow:0 14px 32px rgba(168,128,46,.4)}
+/* User chip */
+.user-chip{display:none;align-items:center;gap:8px;padding:6px 12px 6px 6px;background:var(--gold-soft);border:1px solid rgba(200,162,74,.35);border-radius:40px;transition:all .35s var(--ease-bounce);cursor:default}
+.user-chip.show{display:flex}
+.user-chip:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(200,162,74,.25)}
+.user-chip .avatar{width:30px;height:30px;border-radius:50%;background:var(--grad-gold);color:var(--navy);display:grid;place-items:center;font-weight:900;font-size:12px;flex-shrink:0}
+.user-chip .uname{font-size:12px;font-weight:800;color:var(--gold-deep);white-space:nowrap;max-width:100px;overflow:hidden;text-overflow:ellipsis}
+body.dark .user-chip .uname{color:var(--gold-light)}
+.user-chip .logout-btn{background:transparent;border:0;color:var(--red);cursor:pointer;font-size:12px;padding:4px 6px;border-radius:8px;transition:all .3s var(--ease)}
+.user-chip .logout-btn:hover{background:rgba(201,107,101,.15);transform:scale(1.1)}
+/* Register nav button */
+.nav-register-btn{border:0;padding:12px 18px;border-radius:13px;background:var(--grad-gold);color:var(--navy);font-size:13px;font-weight:800;position:relative;overflow:hidden;transition:all .35s var(--ease-bounce);flex-shrink:0;display:flex;align-items:center;gap:8px}
+.nav-register-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.4) 50%,transparent 70%);transform:translateX(-140%);transition:transform .8s var(--ease)}
+.nav-register-btn:hover::after{transform:translateX(140%)}
+.nav-register-btn:hover{background:var(--gold-deep);color:#fff;transform:translateY(-3px) scale(1.04);box-shadow:0 14px 32px rgba(168,128,46,.4)}
+.mobile-toggle{display:none}
+.mobile-toggle .bars{display:flex;flex-direction:column;gap:4px;width:18px;height:14px;justify-content:center;align-items:center}
+.mobile-toggle .bars span{display:block;width:18px;height:2px;background:currentColor;border-radius:2px;transition:transform .35s var(--ease),opacity .25s var(--ease);transform-origin:center}
+.mobile-toggle.open .bars span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.mobile-toggle.open .bars span:nth-child(2){opacity:0;transform:scaleX(0)}
+.mobile-toggle.open .bars span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+/* HERO */
+.hero{min-height:680px;display:flex;align-items:center;padding:70px 0 60px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:70px;align-items:center}
+.hero-copy{position:relative;z-index:2}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;padding:8px 13px;background:rgba(200,162,74,.13);border:1px solid rgba(200,162,74,.30);border-radius:100px;color:#8c6823;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:24px;animation:badgeFloat 4s ease-in-out infinite;transition:all .35s var(--ease-bounce)}
+.hero-badge:hover{background:rgba(200,162,74,.25);transform:translateY(-3px) scale(1.04);box-shadow:0 12px 28px rgba(200,162,74,.25)}
+@keyframes badgeFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+body.dark .hero-badge{color:var(--gold-light)}
+.hero-badge i{color:var(--gold);animation:boltPulse 2.4s ease-in-out infinite}
+@keyframes boltPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.88)}}
+.hero h1{font-family:"Playfair Display",serif;font-size:clamp(48px,6vw,82px);line-height:.98;letter-spacing:-3px;max-width:750px;margin-bottom:25px}
+.hero h1 em{font-style:normal;background:var(--grad-gold);background-size:200% 200%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:var(--gold);animation:shineText 5s ease-in-out infinite}
+.hero-text{color:var(--muted);font-size:17px;max-width:600px;margin-bottom:34px}
+.hero-buttons{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 22px;background:var(--navy);color:#fff;border:1px solid var(--navy);border-radius:14px;font-size:14px;font-weight:800;position:relative;overflow:hidden;transition:all .4s var(--ease-bounce)}
+.btn-primary::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 32%,rgba(255,255,255,.24) 50%,transparent 68%);transform:translateX(-140%);transition:transform .85s var(--ease)}
+.btn-primary:hover::after{transform:translateX(140%)}
+.btn-primary:hover{transform:translateY(-4px) scale(1.03);box-shadow:0 18px 40px rgba(10,18,32,.28);background:#16233c}
+.btn-primary:active{transform:translateY(-2px) scale(1.01)}
+.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 22px;background:transparent;color:var(--text);border:1px solid var(--border-strong);border-radius:14px;font-size:14px;font-weight:800;position:relative;overflow:hidden;transition:all .4s var(--ease-bounce)}
+.btn-secondary::before{content:"";position:absolute;inset:0;background:var(--grad-gold);opacity:0;transition:opacity .4s var(--ease);z-index:-1}
+.btn-secondary:hover::before{opacity:.1}
+.btn-secondary:hover{border-color:var(--gold);transform:translateY(-4px) scale(1.03);box-shadow:0 18px 40px rgba(200,162,74,.25);color:var(--gold-deep)}
+.hero-meta{display:flex;flex-wrap:wrap;gap:22px;margin-top:32px;color:var(--muted);font-size:12px}
+.hero-meta span{display:flex;align-items:center;gap:7px;transition:all .35s var(--ease-bounce);cursor:default}
+.hero-meta span:hover{color:var(--gold-deep);transform:translateY(-3px) scale(1.05)}
+.hero-meta i{color:var(--gold);transition:transform .4s var(--ease)}
+.hero-meta span:hover i{transform:rotate(-15deg) scale(1.2)}
+.hero-visual{position:relative;min-height:500px}
+.money-dashboard{position:absolute;inset:30px 0 20px 20px;background:var(--grad-navy);border-radius:34px;padding:30px;color:#fff;border:1px solid rgba(255,255,255,.07);box-shadow:0 40px 90px rgba(10,18,32,.30),inset 0 1px 0 rgba(255,255,255,.08);overflow:hidden;animation:dashboardFloat 8s ease-in-out infinite;transition:transform .5s var(--ease-bounce),box-shadow .5s var(--ease)}
+.money-dashboard:hover{box-shadow:0 50px 110px rgba(10,18,32,.4),0 0 0 2px rgba(200,162,74,.3),inset 0 1px 0 rgba(255,255,255,.08);transform:translateY(-8px) rotate(-1deg)}
+@keyframes dashboardFloat{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(.4deg)}}
+.money-dashboard::before{content:"";position:absolute;width:280px;height:280px;right:-100px;top:-100px;border-radius:50%;background:rgba(200,162,74,.15);animation:orbDrift 11s ease-in-out infinite alternate}
+@keyframes orbDrift{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(-40px,40px,0) scale(1.10)}}
+.dashboard-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:2}
+.dashboard-label{font-size:11px;color:#9ba7ba;text-transform:uppercase;letter-spacing:1.4px}
+.dashboard-amount{font-family:"Playfair Display",serif;font-size:44px;margin-top:4px}
+.dashboard-month{font-size:11px;color:#9ba7ba}
+.dashboard-badge{padding:8px 10px;border-radius:10px;background:rgba(200,162,74,.14);border:1px solid rgba(200,162,74,.24);color:#f2d693;font-size:11px;font-weight:800;transition:all .35s var(--ease-bounce)}
+.money-dashboard:hover .dashboard-badge{transform:scale(1.08) rotate(3deg)}
+.dashboard-bars{height:180px;display:flex;align-items:flex-end;gap:13px;margin-top:55px;padding:0 5px;position:relative;z-index:2}
+.bar{flex:1;max-width:40px;height:var(--height);border-radius:9px 9px 4px 4px;background:linear-gradient(to top,#a8802e,#f2d693);opacity:.92;transform-origin:bottom;animation:barRise 1s var(--ease) both,barGlow 3s ease-in-out infinite;transition:filter .3s var(--ease),transform .4s var(--ease-bounce)}
+.bar:hover{filter:brightness(1.4);transform:scaleY(1.08)}
+@keyframes barRise{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes barGlow{0%,100%{filter:brightness(1)}50%{filter:brightness(1.25)}}
+.dashboard-bottom{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:32px;position:relative;z-index:2}
+.dashboard-mini{padding:14px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.045);border-radius:15px;transition:all .35s var(--ease-bounce)}
+.dashboard-mini:hover{background:rgba(200,162,74,.15);transform:translateY(-3px);border-color:rgba(200,162,74,.35)}
+.dashboard-mini span{display:block;color:#8f9bad;font-size:10px;margin-bottom:3px}
+.dashboard-mini strong{font-size:17px}
+.float-card{position:absolute;background:rgba(255,255,255,.95);color:var(--text);padding:15px 17px;border-radius:16px;box-shadow:0 24px 50px rgba(10,18,32,.20);display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;z-index:5;border:1px solid rgba(255,255,255,.7);animation:float 4.5s ease-in-out infinite;backdrop-filter:blur(10px);transition:all .4s var(--ease-bounce)}
+.float-card:hover{transform:scale(1.08) translateY(-4px);box-shadow:0 30px 60px rgba(200,162,74,.3)}
+body.dark .float-card{background:rgba(19,30,50,.92);border-color:rgba(255,255,255,.09)}
+.float-card i{width:34px;height:34px;display:grid;place-items:center;border-radius:11px;background:var(--gold-soft);color:#8f6b22;transition:transform .4s var(--ease-bounce)}
+.float-card:hover i{transform:rotate(-15deg) scale(1.1)}
+body.dark .float-card i{background:rgba(200,162,74,.18);color:var(--gold-light)}
+.float-one{top:10px;right:-18px}
+.float-two{bottom:5px;left:-10px;animation-delay:1.2s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+/* SLIDER */
+.hero-slider-section{padding:20px 0 60px;position:relative}
+.hero-slider{position:relative;width:100%;height:420px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--border);transition:box-shadow .5s var(--ease),transform .5s var(--ease)}
+.hero-slider:hover{box-shadow:0 40px 100px rgba(10,18,32,.18);transform:translateY(-4px)}
+.slider-container{position:relative;width:100%;height:100%}
+.slide{position:absolute;top:0;left:0;width:100%;height:100%;opacity:0;transition:opacity 0.9s ease-in-out;background-size:cover;background-position:center}
+.slide.active{opacity:1}
+.slide::before{content:"";position:absolute;inset:0;background:linear-gradient(150deg,rgba(10,18,32,.75) 0%,rgba(10,18,32,.4) 60%,rgba(200,162,74,.15) 100%)}
+.slide-content{position:absolute;bottom:40px;left:40px;z-index:2;background:rgba(10,18,32,.7);backdrop-filter:blur(14px);padding:1.5rem 2rem;border-radius:20px;border-left:4px solid var(--gold);max-width:90%;animation:slideContentIn 0.8s var(--ease);transition:transform .4s var(--ease-bounce)}
+.slide-content:hover{transform:translateY(-4px) scale(1.02)}
+@keyframes slideContentIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.slide-content h3{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--gold-light);margin-bottom:6px}
+.slide-content p{font-size:0.95rem;color:#cfd6e0}
+.slider-btn{position:absolute;top:50%;transform:translateY(-50%);background:rgba(10,18,32,.6);color:var(--gold-light);border:1px solid rgba(200,162,74,.3);font-size:1.5rem;padding:0.6rem 1rem;cursor:pointer;z-index:10;transition:all .35s var(--ease-bounce);border-radius:12px;backdrop-filter:blur(10px)}
+.slider-btn:hover{background:rgba(200,162,74,.3);border-color:var(--gold);transform:translateY(-50%) scale(1.15);box-shadow:0 10px 30px rgba(200,162,74,.4)}
+.prev-btn{left:20px}.next-btn{right:20px}
+.slider-dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);display:flex;gap:10px;z-index:10}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,0.4);cursor:pointer;transition:all .35s var(--ease-bounce);border:1px solid rgba(200,162,74,.4)}
+.dot:hover{transform:scale(1.4);background:rgba(200,162,74,.7)}
+.dot.active-dot{background:var(--gold);transform:scale(1.4);box-shadow:0 0 20px rgba(200,162,74,.9)}
+/* QUICK STRIP */
+.quick-strip{margin-top:20px;position:relative;z-index:5}
+.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);background:var(--white);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.quick-item{padding:24px;border-right:1px solid var(--border);display:flex;align-items:center;gap:14px;transition:all .4s var(--ease-bounce);position:relative;overflow:hidden}
+.quick-item::before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(200,162,74,.15) 50%,transparent 70%);transform:translateX(-100%);transition:transform .8s var(--ease)}
+.quick-item:hover::before{transform:translateX(100%)}
+.quick-item:last-child{border-right:0}
+.quick-item:hover{background:rgba(200,162,74,.08);transform:translateY(-4px) scale(1.02);box-shadow:0 12px 30px rgba(200,162,74,.15);z-index:2}
+.quick-icon{width:43px;height:43px;display:grid;place-items:center;background:var(--gold-soft);color:#8f6b22;border-radius:13px;transition:all .45s var(--ease-bounce);position:relative;z-index:2}
+.quick-item:hover .quick-icon{transform:scale(1.18) rotate(-10deg);box-shadow:0 10px 24px rgba(200,162,74,.4);background:var(--grad-gold)}
+.quick-item strong{display:block;font-size:14px;transition:color .3s var(--ease)}
+.quick-item span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.quick-item:hover strong{color:var(--gold-deep)}
+.clickable{cursor:pointer}
+/* FEATURE CARDS */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.feature-card{position:relative;padding:32px;min-height:270px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:all .45s var(--ease-bounce);cursor:pointer}
+.feature-card::before{content:"";position:absolute;inset:auto -40% -60% auto;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(200,162,74,.28),transparent 70%);opacity:0;transition:opacity .5s var(--ease)}
+.feature-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(200,162,74,.1) 50%,transparent 70%);transform:translateX(-100%);transition:transform 1s var(--ease);pointer-events:none}
+.feature-card:hover::before{opacity:1}
+.feature-card:hover::after{transform:translateX(100%)}
+.feature-card:hover{transform:translateY(-10px) scale(1.02);box-shadow:0 40px 80px rgba(10,18,32,.15),0 0 0 1px rgba(200,162,74,.4);border-color:transparent}
+.feature-number{font-size:11px;color:var(--gold);font-weight:900;letter-spacing:1px;display:block}
+.feature-icon{width:50px;height:50px;margin:25px 0 20px;border-radius:15px;display:grid;place-items:center;background:var(--navy);color:var(--gold-light);font-size:18px;transition:all .5s var(--ease-bounce)}
+.feature-card:hover .feature-icon{transform:translateY(-6px) rotate(-12deg) scale(1.15);box-shadow:0 20px 40px rgba(10,18,32,.35);background:var(--grad-navy)}
+.feature-card h3{font-size:20px;margin-bottom:9px;transition:color .3s var(--ease)}
+.feature-card:hover h3{color:var(--gold-deep)}
+.feature-card p{color:var(--muted);font-size:13px}
+/* Info hint badge */
+.info-hint{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--gold-soft);color:var(--gold-deep);display:grid;place-items:center;font-size:12px;opacity:0;transform:scale(.6);transition:all .35s var(--ease-bounce);pointer-events:none;z-index:3}
+.feature-card:hover .info-hint,.process-card:hover .info-hint,.tip-card:hover .info-hint,.gallery-card:hover .info-hint,.concept-card:hover .info-hint{opacity:1;transform:scale(1)}
+/* PROCESS */
+.process{background:var(--grad-navy);color:#fff;position:relative;overflow:hidden}
+.process .section-title{color:#fff}
+.process .section-subtitle{color:#aab4c3}
+.process .eyebrow{color:var(--gold-light)}
+.process-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;position:relative;z-index:2}
+.process-card{padding:30px;border:1px solid rgba(255,255,255,.09);border-radius:22px;background:rgba(255,255,255,.035);transition:all .45s var(--ease-bounce);cursor:pointer;position:relative;overflow:hidden}
+.process-card::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(200,162,74,.15) 50%,transparent 70%);transform:translateX(-100%);transition:transform 1.1s var(--ease);pointer-events:none}
+.process-card:hover::after{transform:translateX(100%)}
+.process-card:hover{background:rgba(255,255,255,.08);transform:translateY(-8px) scale(1.02);border-color:rgba(200,162,74,.5);box-shadow:0 25px 55px rgba(0,0,0,.35),0 0 0 1px rgba(200,162,74,.3)}
+.process-card span{display:block;font-family:"Playfair Display",serif;color:var(--gold-light);font-size:45px;margin-bottom:20px;transition:all .5s var(--ease-bounce)}
+.process-card:hover span{transform:translateX(10px) scale(1.1);color:var(--gold);text-shadow:0 0 30px rgba(200,162,74,.6)}
+.process-card h3{margin-bottom:9px}
+.process-card p{color:#aab4c3;font-size:13px}
+/* REVIEWS */
+.reviews-community{margin-top:50px;background:var(--white);border-radius:var(--radius-xl);padding:32px;border:1px solid var(--border);box-shadow:var(--shadow-sm);transition:box-shadow .4s var(--ease)}
+.reviews-community:hover{box-shadow:var(--shadow)}
+.reviews-community .section-title-icon{font-size:1.5rem;font-weight:700;margin-bottom:22px;display:flex;align-items:center;gap:12px;color:var(--text);font-family:"Playfair Display",serif}
+.reviews-community .section-title-icon i{color:var(--gold);transition:transform .5s var(--ease-bounce)}
+.reviews-community:hover .section-title-icon i{transform:rotate(-15deg) scale(1.15)}
+.review-form-card{background:var(--cream);border-radius:20px;padding:22px;margin-bottom:26px;border:1px solid var(--border)}
+body.dark .review-form-card{background:var(--cream-2)}
+.review-form-card input,.review-form-card textarea{background:var(--white);border:1px solid var(--border-strong);border-radius:12px;padding:12px 15px;width:100%;color:var(--text);margin-bottom:10px;font-family:inherit;font-size:13px;transition:all .3s var(--ease)}
+body.dark .review-form-card input,body.dark .review-form-card textarea{background:var(--navy-2)}
+.review-form-card input:focus,.review-form-card textarea:focus{border-color:var(--gold);outline:none;box-shadow:0 0 0 4px rgba(200,162,74,.13);transform:translateY(-2px)}
+.review-form-card button{background:var(--navy);border:none;padding:12px 22px;border-radius:12px;font-weight:800;color:white;cursor:pointer;transition:all .35s var(--ease-bounce);font-size:13px;display:inline-flex;align-items:center;gap:8px}
+.review-form-card button:hover{background:var(--gold-deep);transform:translateY(-3px) scale(1.04);box-shadow:0 12px 28px rgba(168,128,46,.4)}
+.review-form-card button:hover i{transform:translateX(4px)}
+.review-form-card button i{transition:transform .35s var(--ease)}
+.review-card{background:var(--cream);border-radius:16px;padding:18px 20px;margin-bottom:14px;border-left:4px solid var(--gold);transition:all .4s var(--ease-bounce)}
+body.dark .review-card{background:var(--cream-2)}
+.review-card:hover{transform:translateX(8px) scale(1.01);box-shadow:0 15px 35px rgba(200,162,74,.15);border-left-width:6px}
+.review-header{display:flex;justify-content:space-between;flex-wrap:wrap;margin-bottom:8px;gap:8px}
+.reviewer-name{font-weight:700;color:var(--gold-deep);font-size:14px}
+body.dark .reviewer-name{color:var(--gold-light)}
+.review-text{margin:8px 0;line-height:1.5;font-size:13.5px}
+.reply-section{margin-top:12px;padding-left:14px;border-left:2px solid rgba(200,162,74,.3)}
+.reply-box{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.reply-input{flex:1;background:var(--white);border:1px solid var(--border-strong);border-radius:30px;padding:8px 16px;color:var(--text);font-family:inherit;font-size:12.5px;min-width:150px;transition:all .3s var(--ease)}
+body.dark .reply-input{background:var(--navy-2)}
+.reply-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(200,162,74,.13);outline:none}
+.reply-btn{background:var(--gold-deep);padding:8px 18px;border-radius:30px;font-size:12px;cursor:pointer;border:none;color:white;font-weight:700;transition:all .35s var(--ease-bounce)}
+.reply-btn:hover{background:var(--gold);transform:translateY(-2px) scale(1.05);box-shadow:0 8px 20px rgba(200,162,74,.3)}
+.existing-reply{background:rgba(200,162,74,.08);padding:10px 14px;border-radius:12px;margin-top:8px;font-size:12.5px;color:var(--text);transition:all .3s var(--ease)}
+.existing-reply:hover{background:rgba(200,162,74,.16);transform:translateX(4px)}
+body.dark .existing-reply{background:rgba(200,162,74,.12)}
+/* PANELS */
+.panel{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);box-shadow:var(--shadow);padding:32px;transition:background .5s var(--ease),border-color .5s var(--ease),box-shadow .4s var(--ease),transform .4s var(--ease)}
+.panel:hover{box-shadow:0 40px 90px rgba(10,18,32,.15);transform:translateY(-2px);border-color:rgba(200,162,74,.3)}
+.panel-title{font-size:21px;margin-bottom:6px;font-family:"Playfair Display",serif}
+.panel-description{color:var(--muted);font-size:13px;margin-bottom:25px}
+.inner-hero{padding:90px 0 55px;background:radial-gradient(circle at 85% 20%,rgba(200,162,74,.15),transparent 26%);position:relative;overflow:hidden}
+.inner-hero .section-title{max-width:850px;position:relative;z-index:1}
+/* CONTACT PAGE */
+.contact-cards-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:40px}
+.contact-info-card{padding:28px 24px;background:var(--white);border:1px solid var(--border);border-radius:var(--radius-lg);text-align:center;position:relative;overflow:hidden;transition:all .45s var(--ease-bounce);cursor:pointer}
+.contact-info-card::before{content:"";position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(120deg,transparent,rgba(200,162,74,.12),transparent);transition:left .7s var(--ease)}
+.contact-info-card:hover::before{left:100%}
+.contact-info-card:hover{transform:translateY(-10px) scale(1.02);border-color:rgba(200,162,74,.5);box-shadow:0 30px 60px rgba(200,162,74,.15)}
+.contact-info-card .ci-icon{width:60px;height:60px;margin:0 auto 18px;border-radius:18px;display:grid;place-items:center;background:var(--grad-navy);color:var(--gold-light);font-size:22px;transition:all .5s var(--ease-bounce);box-shadow:0 10px 25px rgba(10,18,32,.25)}
+.contact-info-card:hover .ci-icon{transform:rotate(-12deg) scale(1.15);background:var(--grad-gold);color:var(--navy);box-shadow:0 18px 40px rgba(168,128,46,.4)}
+.contact-info-card h3{font-size:15px;margin-bottom:6px;font-family:"Playfair Display",serif;transition:color .3s var(--ease)}
+.contact-info-card:hover h3{color:var(--gold-deep)}
+.contact-info-card p{color:var(--muted);font-size:12.5px;word-break:break-word}
+.contact-info-card a{color:var(--muted);transition:color .3s var(--ease)}
+.contact-info-card:hover a{color:var(--gold-deep)}
+.contact-main-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;margin-bottom:40px}
+.contact-form-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);padding:36px;box-shadow:var(--shadow);transition:box-shadow .4s var(--ease)}
+.contact-form-wrap:hover{box-shadow:0 40px 90px rgba(10,18,32,.15)}
+.contact-form-wrap h3{font-family:"Playfair Display",serif;font-size:24px;margin-bottom:6px}
+.contact-form-wrap>p{color:var(--muted);font-size:13px;margin-bottom:26px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-field{margin-bottom:14px}
+.form-field label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:var(--text)}
+.form-field label span{color:var(--red)}
+.form-input,.form-select,.form-textarea{width:100%;padding:13px 16px;border:1px solid var(--border-strong);background:var(--cream);color:var(--text);border-radius:12px;outline:none;font-size:13.5px;transition:all .3s var(--ease);font-family:inherit}
+body.dark .form-input,body.dark .form-select,body.dark .form-textarea{background:var(--cream-2)}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);background:var(--white);box-shadow:0 0 0 4px rgba(200,162,74,.15);transform:translateY(-2px)}
+.form-textarea{min-height:130px;resize:vertical}
+.star-rating{display:flex;gap:8px}
+.star-rating input{display:none}
+.star-rating label{width:42px;height:42px;border:1px solid var(--border-strong);border-radius:12px;display:grid;place-items:center;cursor:pointer;font-size:12px;font-weight:800;color:var(--muted);transition:all .35s var(--ease-bounce);background:var(--cream)}
+body.dark .star-rating label{background:var(--cream-2)}
+.star-rating label:hover{transform:translateY(-4px) scale(1.1) rotate(-5deg);border-color:var(--gold);color:var(--gold-deep);box-shadow:0 10px 22px rgba(200,162,74,.25)}
+.star-rating input:checked+label{background:var(--grad-gold);border-color:transparent;color:var(--navy);transform:scale(1.05);box-shadow:0 12px 28px rgba(168,128,46,.35)}
+.contact-submit-btn{width:100%;padding:15px 22px;border:none;background:var(--grad-navy);color:#fff;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;position:relative;overflow:hidden;transition:all .4s var(--ease-bounce);display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.contact-submit-btn::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(200,162,74,.5) 50%,transparent 70%);transform:translateX(-140%);transition:transform .8s var(--ease)}
+.contact-submit-btn:hover::after{transform:translateX(140%)}
+.contact-submit-btn:hover{background:var(--gold-deep);transform:translateY(-4px) scale(1.02);box-shadow:0 20px 45px rgba(168,128,46,.4)}
+.contact-submit-btn:disabled{opacity:.7;cursor:not-allowed}
+.form-feedback{margin-top:16px;padding:14px 18px;border-radius:12px;font-size:13px;font-weight:600;display:none;align-items:center;gap:10px;animation:msgIn .4s var(--ease)}
+.form-feedback.show{display:flex}
+.form-feedback.success{background:rgba(61,143,112,.14);color:#2f6a4f;border:1px solid rgba(61,143,112,.35)}
+body.dark .form-feedback.success{color:#8fd8b8}
+.form-feedback.error{background:rgba(201,107,101,.14);color:#8f3530;border:1px solid rgba(201,107,101,.35)}
+body.dark .form-feedback.error{color:#ff9b95}
+@keyframes msgIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.contact-map-wrap{background:var(--white);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column;transition:box-shadow .4s var(--ease)}
+.contact-map-wrap:hover{box-shadow:0 40px 90px rgba(10,18,32,.15)}
+.contact-map-wrap iframe{width:100%;flex:1;min-height:320px;border:none}
+.contact-map-info{padding:20px 24px;background:var(--grad-navy);color:#fff}
+.contact-map-info h4{font-family:"Playfair Display",serif;font-size:17px;margin-bottom:6px;color:var(--gold-light)}
+.contact-map-info p{font-size:12.5px;color:#aeb7c6}
+.contact-map-info .map-social{display:flex;gap:10px;margin-top:14px}
+.contact-map-info .map-social a{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#c6cfdd;font-size:14px;transition:all .4s var(--ease-bounce)}
+.contact-map-info .map-social a:hover{background:var(--grad-gold);color:var(--navy);transform:translateY(-5px) rotate(-8deg) scale(1.1);border-color:transparent;box-shadow:0 15px 32px rgba(168,128,46,.4)}
+.contact-faq{margin-top:40px}
+.contact-faq h3{font-family:"Playfair Display",serif;font-size:28px;margin-bottom:22px;text-align:center}
+.faq-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.faq-item{padding:24px;background:var(--white);border:1px solid var(--border);border-radius:18px;transition:all .4s var(--ease-bounce);cursor:pointer;position:relative;overflow:hidden}
+.faq-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--grad-gold);transform:scaleY(0);transform-origin:bottom;transition:transform .5s var(--ease)}
+.faq-item:hover::before{transform:scaleY(1)}
+.faq-item:hover{transform:translateX(8px);border-color:rgba(200,162,74,.4);box-shadow:0 15px 35px rgba(200,162,74,.12)}
+.faq-item h4{font-size:15px;margin-bottom:8px;display:flex;align-items:center;gap:10px;transition:color .3s var(--ease)}
+.faq-item:hover h4{color:var(--gold-deep)}
+.faq-item h4 i{color:var(--gold);transition:transform .5s var(--ease-bounce)}
+.faq-item:hover h4 i{transform:rotate(-15deg) scale(1.2)}
+.faq-item p{color:var(--muted);font-size:13px;line-height:1.6}
+/* SAVED GOALS */
+.saved-goal-card{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 18px;background:var(--cream);border:1px solid var(--border);border-radius:14px;margin-bottom:10px;transition:all .35s var(--ease-bounce)}
+body.dark .saved-goal-card{background:var(--cream-2)}
+.saved-goal-card:hover{transform:translateX(4px);border-color:rgba(200,162,74,.4);box-shadow:0 10px 24px rgba(200,162,74,.12)}
+.saved-goal-info strong{display:block;font-size:14px;color:var(--gold-deep)}
+body.dark .saved-goal-info strong{color:var(--gold-light)}
+.saved-goal-info span{display:block;font-size:11.5px;color:var(--muted);margin-top:2px}
+.delete-goal-btn{width:34px;height:34px;border-radius:10px;border:none;background:rgba(201,107,101,.12);color:var(--red);cursor:pointer;transition:all .3s var(--ease-bounce);flex-shrink:0}
+.delete-goal-btn:hover{background:var(--red);color:#fff;transform:scale(1.12) rotate(-8deg)}
+/* QUIZ */
+.quiz-option{text-align:left;padding:16px 20px;border:1px solid var(--border-strong);background:var(--cream);color:var(--text);border-radius:14px;font-size:14px;font-weight:600;cursor:pointer;transition:all .3s var(--ease-bounce);width:100%;font-family:inherit}
+body.dark .quiz-option{background:var(--cream-2)}
+.quiz-option:hover:not(:disabled){border-color:var(--gold);background:var(--gold-soft);transform:translateX(6px);box-shadow:0 10px 22px rgba(200,162,74,.2);color:var(--gold-deep)}
+.quiz-option:disabled{cursor:default}
+.quiz-option.is-correct{background:rgba(61,143,112,.18) !important;border-color:var(--green) !important;color:#2f6a4f !important}
+.quiz-option.is-wrong{background:rgba(201,107,101,.18) !important;border-color:var(--red) !important;color:#8f3530 !important}
+body.dark .quiz-option.is-correct{color:#8fd8b8 !important}
+body.dark .quiz-option.is-wrong{color:#ff9b95 !important}
+.quiz-progress-bar{height:6px;background:var(--cream-2);border-radius:10px;overflow:hidden;margin-bottom:8px}
+.quiz-progress-bar>div{height:100%;background:var(--grad-gold);border-radius:10px;transition:width .4s var(--ease)}
+/* EXPORT TOOLBAR */
+.expense-toolbar{display:flex;justify-content:flex-end;gap:12px;margin-top:20px;align-items:flex-end;flex-wrap:wrap}
+/* TABLE ACTIONS */
+.table-action-btn{width:32px;height:32px;border-radius:9px;border:0;background:var(--cream-2);color:var(--text);cursor:pointer;transition:all .3s var(--ease-bounce);margin-right:4px}
+.table-action-btn:hover{transform:scale(1.15)}
+.table-action-btn.edit:hover{background:var(--gold-soft);color:var(--gold-deep);transform:scale(1.15) rotate(-8deg)}
+.table-action-btn.delete:hover{background:rgba(201,107,101,.2);color:var(--red);transform:scale(1.15) rotate(8deg)}
+/* FINAL CTA */
+.final-cta{margin-top:80px;padding:70px 30px;background:var(--grad-navy);border-radius:35px;text-align:center;color:#fff;position:relative;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.final-cta:hover{transform:translateY(-4px);box-shadow:0 45px 90px rgba(10,18,32,.35)}
+.final-cta::before,.final-cta::after{content:"";position:absolute;width:250px;height:250px;border-radius:50%;border:1px solid rgba(200,162,74,.18)}
+.final-cta::before{left:-120px;top:-100px;animation:orbDrift 15s ease-in-out infinite alternate}
+.final-cta::after{right:-100px;bottom:-130px}
+.final-cta h2{position:relative;z-index:2;font-family:"Playfair Display",serif;font-size:clamp(35px,5vw,58px);margin-bottom:12px}
+.final-cta p{position:relative;z-index:2;color:#aab4c3;max-width:600px;margin:0 auto 25px}
+.final-cta .btn-primary{position:relative;z-index:2;background:var(--grad-gold);border-color:transparent;color:var(--navy)}
+.final-cta .btn-primary:hover{box-shadow:0 22px 50px rgba(168,128,46,.5);transform:translateY(-5px) scale(1.04)}
+/* FOOTER */
+footer{margin-top:100px;background:#05090f;color:#fff;padding:60px 0 25px;border-top:1px solid rgba(255,255,255,.05);position:relative;overflow:hidden}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:40px;position:relative;z-index:1}
+.footer-brand p{color:#8994a6;font-size:12px;max-width:300px;margin-top:15px}
+.footer-title{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#f2d693;margin-bottom:15px}
+.footer-links{display:grid;gap:8px}
+.footer-links button{background:none;border:0;color:#8994a6;text-align:left;font-size:12px;cursor:pointer;transition:all .35s var(--ease-bounce);padding:4px 0;position:relative}
+.footer-links button::before{content:"›";position:absolute;left:-14px;opacity:0;color:var(--gold);transition:all .35s var(--ease)}
+.footer-links button:hover{color:#fff;transform:translateX(14px)}
+.footer-links button:hover::before{opacity:1;left:-10px}
+/* TOAST */
+.toast{position:fixed;right:25px;bottom:110px;z-index:3000;padding:14px 22px;background:var(--grad-navy);color:#fff;border:1px solid rgba(200,162,74,.5);border-radius:13px;box-shadow:0 25px 60px rgba(0,0,0,.4);font-size:13px;font-weight:600;transform:translateY(100px);opacity:0;pointer-events:none;transition:all .5s var(--ease-bounce);display:flex;align-items:center;gap:10px;max-width:calc(100vw - 50px)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast i{color:var(--gold-light)}
+/* AI WIDGET */
+.ai-dock{position:fixed;right:24px;bottom:24px;z-index:2400;display:flex;flex-direction:column;align-items:flex-end;gap:14px}
+.ai-fab{width:64px;height:64px;border-radius:50%;border:0;background:var(--grad-gold);color:var(--navy);font-size:23px;display:grid;place-items:center;box-shadow:0 20px 45px rgba(168,128,46,.42);transition:all .4s var(--ease-bounce);position:relative}
+.ai-fab:hover{transform:translateY(-6px) scale(1.1) rotate(-8deg);box-shadow:0 28px 60px rgba(168,128,46,.6)}
+.ai-panel{width:min(384px,calc(100vw - 36px));background:var(--white);border:1px solid var(--border);border-radius:26px;box-shadow:0 45px 100px rgba(10,18,32,.30);overflow:hidden;display:flex;flex-direction:column;transform:translateY(20px) scale(.9);opacity:0;pointer-events:none;transition:.45s var(--ease);transform-origin:bottom right}
+.ai-dock.open .ai-panel{transform:none;opacity:1;pointer-events:auto}
+.ai-chip{border:1px solid var(--border-strong);background:transparent;color:var(--muted);padding:7px 11px;border-radius:100px;font-size:10px;font-weight:600;cursor:pointer;transition:all .3s var(--ease-bounce)}
+.ai-chip:hover{border-color:var(--gold);background:rgba(200,162,74,.12);color:var(--gold-deep);transform:translateY(-2px) scale(1.05)}
+/* =========== REGISTER MODAL =========== */
+.register-overlay{position:fixed;inset:0;z-index:9000;background:rgba(6,10,20,.75);backdrop-filter:blur(14px) saturate(140%);display:none;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .4s var(--ease)}
+.register-overlay.show{display:flex;opacity:1}
+.register-box{width:min(500px,100%);max-height:92vh;overflow:auto;background:var(--white);border:1px solid var(--border);border-radius:32px;padding:40px 36px 32px;box-shadow:0 60px 130px rgba(0,0,0,.5);position:relative;transform:translateY(30px) scale(.94);transition:transform .5s var(--ease-bounce)}
+.register-overlay.show .register-box{transform:none}
+.register-box::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;border-radius:32px 32px 0 0;background:var(--grad-gold)}
+.register-brand{display:flex;align-items:center;gap:12px;margin-bottom:26px}
+.register-brand .brand-mark{width:52px;height:52px}
+.register-brand h2{font-family:"Playfair Display",serif;font-size:22px;letter-spacing:-.5px}
+.register-brand small{display:block;font-size:10px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+.register-title{font-family:"Playfair Display",serif;font-size:28px;line-height:1.15;letter-spacing:-.8px;margin-bottom:10px}
+.register-title span{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.register-subtitle{color:var(--muted);font-size:13.5px;margin-bottom:26px;line-height:1.55}
+.register-form .form-field{margin-bottom:14px}
+.register-form label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:var(--text)}
+.register-form label span{color:var(--red)}
+.register-form .form-input{width:100%;padding:14px 16px;border:1px solid var(--border-strong);background:var(--cream);color:var(--text);border-radius:12px;font-size:14px;outline:none;transition:all .3s var(--ease)}
+body.dark .register-form .form-input{background:var(--cream-2)}
+.register-form .form-input:focus{border-color:var(--gold);background:var(--white);box-shadow:0 0 0 4px rgba(200,162,74,.15);transform:translateY(-2px)}
+.register-submit{width:100%;padding:15px 22px;border:none;background:var(--grad-navy);color:#fff;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;position:relative;overflow:hidden;transition:all .4s var(--ease-bounce);display:inline-flex;align-items:center;justify-content:center;gap:10px;margin-top:8px}
+.register-submit::after{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent 30%,rgba(200,162,74,.5) 50%,transparent 70%);transform:translateX(-140%);transition:transform .8s var(--ease)}
+.register-submit:hover::after{transform:translateX(140%)}
+.register-submit:hover{background:var(--gold-deep);transform:translateY(-4px) scale(1.02);box-shadow:0 20px 45px rgba(168,128,46,.4)}
+.register-submit:disabled{opacity:.7;cursor:not-allowed}
+.skip-register{display:block;width:100%;background:transparent;border:0;color:var(--muted);font-size:12px;font-weight:700;padding:14px;margin-top:8px;cursor:pointer;transition:color .3s var(--ease);text-decoration:underline;text-underline-offset:4px}
+.skip-register:hover{color:var(--gold-deep)}
+.register-feedback{margin-top:14px;padding:12px 16px;border-radius:12px;font-size:12.5px;font-weight:600;display:none;align-items:center;gap:10px}
+.register-feedback.show{display:flex}
+.register-feedback.success{background:rgba(61,143,112,.14);color:#2f6a4f;border:1px solid rgba(61,143,112,.35)}
+.register-feedback.error{background:rgba(201,107,101,.14);color:#8f3530;border:1px solid rgba(201,107,101,.35)}
+body.dark .register-feedback.success{color:#8fd8b8}
+body.dark .register-feedback.error{color:#ff9b95}
+/* =========== INFO MODAL =========== */
+.info-modal{position:fixed;inset:0;z-index:9500;background:rgba(6,10,20,.72);backdrop-filter:blur(14px) saturate(140%);display:none;align-items:center;justify-content:center;padding:22px;opacity:0;transition:opacity .38s var(--ease)}
+.info-modal.show{display:flex;opacity:1}
+.info-modal-box{width:min(620px,100%);max-height:90vh;overflow:auto;background:var(--white);border:1px solid var(--border);border-radius:32px;padding:40px 38px 32px;box-shadow:0 60px 130px rgba(0,0,0,.5);position:relative;transform:translateY(30px) scale(.94);transition:transform .5s var(--ease-bounce)}
+.info-modal.show .info-modal-box{transform:none}
+.info-modal-box::before{content:"";position:absolute;top:0;left:0;right:0;height:6px;border-radius:32px 32px 0 0;background:var(--grad-gold)}
+.info-modal-close{position:absolute;top:18px;right:18px;width:38px;height:38px;border:1px solid var(--border-strong);background:var(--cream);color:var(--text);border-radius:12px;display:grid;place-items:center;font-size:13px;transition:all .35s var(--ease-bounce);cursor:pointer;z-index:5}
+.info-modal-close:hover{background:var(--gold-soft);border-color:var(--gold);color:#6d5219;transform:rotate(90deg)}
+body.dark .info-modal-close{background:var(--cream-2)}
+.info-modal-icon{width:64px;height:64px;border-radius:20px;display:grid;place-items:center;background:var(--grad-gold);color:var(--navy);font-size:23px;margin-bottom:22px;box-shadow:0 16px 36px rgba(168,128,46,.35)}
+.info-modal-tag{display:inline-block;padding:6px 12px;background:rgba(200,162,74,.14);border:1px solid rgba(200,162,74,.30);color:var(--gold-deep);font-size:10px;font-weight:900;letter-spacing:1.4px;text-transform:uppercase;border-radius:100px;margin-bottom:14px}
+body.dark .info-modal-tag{color:var(--gold-light)}
+.info-modal-title{font-family:"Playfair Display",serif;font-size:32px;line-height:1.1;letter-spacing:-.8px;margin-bottom:12px}
+.info-modal-title span{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.info-modal-body{color:var(--muted);font-size:14px;line-height:1.65;margin-bottom:22px}
+.info-modal-points{list-style:none;display:grid;gap:9px;margin-bottom:22px}
+.info-modal-points li{display:flex;align-items:flex-start;gap:11px;padding:12px 15px;background:var(--cream);border:1px solid var(--border);border-radius:13px;font-size:13px;color:var(--text);transition:all .3s var(--ease-bounce)}
+body.dark .info-modal-points li{background:var(--cream-2)}
+.info-modal-points li:hover{transform:translateX(5px);border-color:rgba(200,162,74,.35)}
+.info-modal-points li i{color:var(--gold);margin-top:3px;font-size:12px;flex-shrink:0}
+.info-modal-note{padding:14px 17px;background:var(--gold-soft);border-left:4px solid var(--gold);border-radius:12px;color:#6d5219;font-size:12.5px;margin-bottom:22px;line-height:1.6;display:none}
+.info-modal-note.show{display:block}
+body.dark .info-modal-note{background:rgba(200,162,74,.14);color:#f2d693}
+.info-modal-actions{display:flex;gap:10px;flex-wrap:wrap}
+.info-modal-actions button,.info-modal-actions a{flex:1;min-width:140px;padding:13px 20px;border-radius:14px;font-size:13px;font-weight:800;cursor:pointer;transition:all .4s var(--ease-bounce);display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--navy);background:var(--navy);color:#fff;font-family:inherit}
+.info-modal-actions button.secondary,.info-modal-actions a.secondary{background:transparent;color:var(--text);border-color:var(--border-strong)}
+.info-modal-actions button:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(10,18,32,.28);background:var(--gold-deep);border-color:var(--gold-deep)}
+.info-modal-actions button.secondary:hover{background:rgba(200,162,74,.1);border-color:var(--gold);color:var(--gold-deep);box-shadow:0 14px 30px rgba(200,162,74,.2)}
+/* RESPONSIVE */
+@media(max-width:1100px){
+.nav-link[data-page="contact"]{display:flex !important}
+.nav-links{position:absolute;top:calc(100% + 10px);left:0;right:0;padding:14px;background:var(--white);border:1px solid var(--border);border-radius:20px;box-shadow:0 30px 70px rgba(10,18,32,.22);display:flex;flex-direction:column;align-items:stretch;gap:4px;opacity:0;transform:translateY(-12px) scale(.98);pointer-events:none;visibility:hidden;max-height:0;overflow:hidden;transition:opacity .35s var(--ease),transform .4s var(--ease),visibility .35s,max-height .55s var(--ease)}
+body.dark .nav-links{background:var(--white)}
+.nav-links.open{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;visibility:visible;max-height:900px}
+.nav-link{text-align:left;padding:13px 16px;font-size:14px;border-radius:12px;width:100%}
+.nav-link::before{display:none}
+.nav-link.active::after{display:none}
+.mobile-toggle{display:grid}
+.nav-cta{display:none}
+.nav-register-btn{display:none}
+.hero-grid{grid-template-columns:1fr}
+.hero-visual{max-width:650px;width:100%;margin:auto}
+.quick-grid{grid-template-columns:1fr 1fr}
+.quick-item:nth-child(2){border-right:0}
+.quick-item:nth-child(-n+2){border-bottom:1px solid var(--border)}
+.feature-grid,.process-grid{grid-template-columns:1fr 1fr}
+.hero-slider{height:340px}
+.contact-cards-grid{grid-template-columns:1fr 1fr}
+.contact-main-grid{grid-template-columns:1fr}
+.faq-grid{grid-template-columns:1fr}
+.footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:700px){
+.top-strip{height:auto;padding:6px 0}
+.top-strip-inner{justify-content:center;gap:10px;font-size:11px}
+.top-left,.top-right{gap:10px}
+.top-item{font-size:10px}
+.nav-wrap{top:8px;margin-top:8px}
+.navbar{min-height:62px;border-radius:18px;padding:8px 10px 8px 14px;gap:8px}
+.brand-name{font-size:15px}
+.brand-name small{display:none}
+.brand-mark{width:40px;height:40px;border-radius:12px}
+.nav-actions{gap:6px}
+.nav-actions .icon-btn{width:40px;height:40px;border-radius:12px}
+.user-chip{padding:4px 8px 4px 4px;gap:6px}
+.user-chip .avatar{width:26px;height:26px;font-size:11px}
+.user-chip .uname{max-width:70px;font-size:11px}
+.user-chip .logout-btn{font-size:11px;padding:3px}
+.hero{padding:50px 0 40px;min-height:auto}
+.hero h1{font-size:42px;letter-spacing:-2px}
+.hero-text{font-size:15px}
+.hero-buttons{flex-direction:column;align-items:stretch}
+.btn-primary,.btn-secondary{width:100%}
+.hero-visual{min-height:390px}
+.money-dashboard{inset:15px 0 10px 0;padding:22px;border-radius:26px}
+.dashboard-amount{font-size:32px}
+.dashboard-bars{margin-top:40px;height:150px;gap:9px}
+.float-one{right:-3px}.float-two{left:-3px}
+.hero-slider{height:260px;border-radius:22px}
+.slide-content{bottom:20px;left:20px;padding:1rem 1.2rem}
+.slide-content h3{font-size:1.2rem}
+.slide-content p{font-size:0.8rem}
+.slider-btn{font-size:1rem;padding:0.4rem 0.7rem}
+.prev-btn{left:8px}.next-btn{right:8px}
+.quick-grid{grid-template-columns:1fr}
+.quick-item{border-right:0 !important;border-bottom:1px solid var(--border)}
+.quick-item:last-child{border-bottom:0}
+.section{padding:65px 0}
+.section-title{font-size:36px;letter-spacing:-1px}
+.feature-grid,.process-grid{grid-template-columns:1fr}
+.panel{padding:22px;border-radius:24px}
+.reviews-community{padding:22px}
+.reviews-community .section-title-icon{font-size:1.2rem}
+.review-card{padding:14px 16px}
+.reply-box{flex-direction:column}
+.reply-btn{width:100%}
+.contact-cards-grid{grid-template-columns:1fr}
+.form-row{grid-template-columns:1fr}
+.contact-form-wrap{padding:24px}
+.faq-grid{grid-template-columns:1fr}
+.contact-map-wrap iframe{min-height:240px}
+.footer-grid{grid-template-columns:1fr;gap:30px}
+.welcome-message{font-size:0.9rem;padding:0.8rem 1.5rem;white-space:normal;max-width:90%}
+.ribbon-half{font-size:1rem;padding:0 12px}
+.register-box{padding:32px 22px 24px;border-radius:24px}
+.register-title{font-size:24px}
+.info-modal-box{padding:32px 22px 24px;border-radius:24px}
+.info-modal-title{font-size:26px}
+.info-modal-actions{flex-direction:column}
+.nav-register-btn{display:flex;padding:10px 14px;font-size:12px}
+}
+@media(max-width:420px){
+.hero h1{font-size:34px}
+.section-title{font-size:30px}
+.brand-name{font-size:14px}
+.ribbon-half{font-size:0.85rem}
+}
+</style>
+</head>
+<body>
+
+<a href="#mainContent" class="skip-link">Skip to main content</a>
+
+<!-- TRANSITION OVERLAY -->
+<div id="transitionOverlay" class="transition-overlay">
+    <div class="ribbon-half ribbon-top">💼 BUDGETBASICS 💼</div>
+    <div class="ribbon-half ribbon-bottom">🎓 APTECH PROJECT • FINANCE MANAGEMENT 🎓</div>
+    <div id="welcomeMsg" class="welcome-message">✨ Welcome • Let's Learn ✨</div>
+</div>
+
+<div class="scroll-progress"><span id="scrollBar"></span></div>
+
+<!-- TOP STRIP -->
+<div class="top-strip">
+    <div class="container top-strip-inner">
+        <div class="top-left">
+            <div class="top-item"><i class="fa-regular fa-clock"></i><span id="liveTime">Loading...</span></div>
+            <div class="top-item"><i class="fa-regular fa-calendar"></i><span id="liveDate">Loading...</span></div>
+        </div>
+        <div class="top-right">
+            <div class="live-badge">
+                <span class="live-dot"></span>
+                <span class="live-count" id="liveViewerCount">1</span>
+                <span style="opacity:.8;">live viewers</span>
+            </div>
+            <div class="top-item"><i class="fa-solid fa-users"></i><span><span id="visitorCount">0</span> visits</span></div>
+            <div class="top-item"><i class="fa-solid fa-graduation-cap"></i> Aptech Project</div>
+        </div>
+    </div>
+</div>
+
+<!-- NAVBAR -->
+<div class="nav-wrap">
+    <nav class="navbar" aria-label="Main navigation">
+        <a href="#" class="brand" id="logoSpinTrigger" onclick="event.preventDefault();">
+            <div class="brand-mark" id="logoMark"><i class="fa-solid fa-b" style="font-size:22px;color:#0a1220;"></i></div>
+            <div class="brand-name">BudgetBasics<small>finance management</small></div>
+        </a>
+        <div class="nav-links" id="navLinks">
+            <button class="nav-link active" data-page="home">Home</button>
+            <button class="nav-link" data-page="basics">Budgeting</button>
+            <button class="nav-link" data-page="needs">Needs vs Wants</button>
+            <button class="nav-link" data-page="rule">50-30-20</button>
+            <button class="nav-link" data-page="savings">Savings</button>
+            <button class="nav-link" data-page="expenses">Expenses</button>
+            <button class="nav-link" data-page="debt">Debt</button>
+            <button class="nav-link" data-page="tips">Tips</button>
+            <button class="nav-link" data-page="gallery">Gallery</button>
+            <button class="nav-link" data-page="quiz">Quiz</button>
+            <button class="nav-link" data-page="contact">Contact</button>
+        </div>
+        <div class="nav-actions">
+            <div class="user-chip" id="userChip">
+                <div class="avatar" id="userAvatar">G</div>
+                <span class="uname" id="userName">Guest</span>
+                <button class="logout-btn" onclick="logoutUser()" title="Logout" aria-label="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+            <button class="icon-btn" id="themeBtn" title="Toggle theme" aria-label="Toggle dark mode"><i class="fa-solid fa-moon"></i></button>
+            <button class="icon-btn mobile-toggle" id="mobileToggle" aria-label="Open navigation menu" aria-expanded="false">
+                <span class="bars"><span></span><span></span><span></span></span>
+            </button>
+            <button class="nav-register-btn" id="navRegisterBtn" onclick="openRegisterModal()">
+                <i class="fa-solid fa-user-plus"></i> Register
+            </button>
+            <button class="nav-cta" onclick="showPage('contact')">Contact</button>
+        </div>
+    </nav>
+</div>
+
+<main id="mainContent">
+
+<!-- HOME -->
+<section class="page active" id="home">
+    <div class="hero">
+        <div class="container hero-grid">
+            <div class="hero-copy">
+                <div class="hero-badge reveal"><i class="fa-solid fa-graduation-cap"></i> Aptech Project • Finance Management</div>
+                <h1 class="reveal d1">Make your money <em>make more sense.</em></h1>
+                <p class="hero-text reveal d2">BudgetBasics is a student-friendly learning space designed to make budgeting, saving and responsible spending easier to understand — one simple decision at a time.</p>
+                <div class="hero-buttons reveal d3">
+                    <button class="btn-primary" onclick="showPage('basics')">Start Learning <i class="fa-solid fa-arrow-right"></i></button>
+                    <button class="btn-secondary" onclick="showPage('rule')">Try Budget Calculator <i class="fa-solid fa-calculator"></i></button>
+                </div>
+                <div class="hero-meta reveal d4">
+                    <span><i class="fa-solid fa-circle-check"></i> Student friendly</span>
+                    <span><i class="fa-solid fa-chart-simple"></i> Interactive learning</span>
+                    <span><i class="fa-solid fa-lock"></i> No banking transactions</span>
+                </div>
+            </div>
+            <div class="hero-visual reveal d2">
+                <div class="float-card float-one"><i class="fa-solid fa-arrow-trend-up"></i><div><strong>Savings +12%</strong><small style="display:block;color:var(--muted);font-weight:500;">monthly progress</small></div></div>
+                <div class="money-dashboard">
+                    <div class="dashboard-top"><div><div class="dashboard-label">Available to plan</div><div class="dashboard-amount">Rs. 24,500</div><div class="dashboard-month">monthly budget</div></div><div class="dashboard-badge">On Track</div></div>
+                    <div class="dashboard-bars"><span class="bar" style="--height:45%"></span><span class="bar" style="--height:68%"></span><span class="bar" style="--height:52%"></span><span class="bar" style="--height:82%"></span><span class="bar" style="--height:61%"></span><span class="bar" style="--height:76%"></span><span class="bar" style="--height:90%"></span></div>
+                    <div class="dashboard-bottom"><div class="dashboard-mini"><span>Needs</span><strong>Rs. 12,250</strong></div><div class="dashboard-mini"><span>Savings</span><strong>Rs. 4,900</strong></div></div>
+                </div>
+                <div class="float-card float-two"><i class="fa-solid fa-piggy-bank"></i><div><strong>Goal Progress</strong><small style="display:block;color:var(--muted);font-weight:500;">68% complete</small></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero-slider-section">
+        <div class="container">
+            <div class="hero-slider reveal">
+                <div class="slider-container">
+                    <div class="slide active" style="background-image:url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1400&h=500&fit=crop&q=60');"><div class="slide-content"><h3>💰 Master Your Money</h3><p>Learn budgeting, saving & smart spending — one decision at a time</p></div></div>
+                    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=1400&h=500&fit=crop&q=60');"><div class="slide-content"><h3>📊 Track Every Rupee</h3><p>Simple tools to plan, track and improve your monthly budget</p></div></div>
+                    <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1633158829585-23ba8f7c8caf?w=1400&h=500&fit=crop&q=60');"><div class="slide-content"><h3>🎯 Build Better Habits</h3><p>From impulse buys to smart savings — learn what works</p></div></div>
+                    <button class="slider-btn prev-btn" aria-label="Previous slide">❮</button>
+                    <button class="slider-btn next-btn" aria-label="Next slide">❯</button>
+                    <div class="slider-dots"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="quick-strip">
+        <div class="container">
+            <div class="quick-grid reveal">
+                <div class="quick-item clickable" onclick="showPage('basics')"><div class="quick-icon"><i class="fa-solid fa-wallet"></i></div><div><strong>Budget Better</strong><span>Understand your income</span></div></div>
+                <div class="quick-item clickable" onclick="showPage('needs')"><div class="quick-icon"><i class="fa-solid fa-scale-balanced"></i></div><div><strong>Needs vs Wants</strong><span>Make thoughtful choices</span></div></div>
+                <div class="quick-item clickable" onclick="showPage('debt')"><div class="quick-icon"><i class="fa-solid fa-credit-card"></i></div><div><strong>Debt & Credit</strong><span>Understand interest</span></div></div>
+                <div class="quick-item clickable" onclick="openAiPanel()"><div class="quick-icon"><i class="fa-solid fa-robot"></i></div><div><strong>Ask BudgetBee</strong><span>Learn with the assistant</span></div></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">What you can learn</div>
+                <h2 class="section-title">Money skills, <span>made simple.</span></h2>
+                <p class="section-subtitle">No complicated financial language. BudgetBasics turns everyday money decisions into simple, understandable learning experiences.</p>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card reveal d1" data-info-key="understand-budgeting"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">01</span><div class="feature-icon"><i class="fa-solid fa-chart-pie"></i></div><h3>Understand Budgeting</h3><p>Learn how income, fixed expenses, variable expenses, needs, wants and savings fit together.</p></div>
+                <div class="feature-card reveal d2" data-info-key="build-saving-habits"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">02</span><div class="feature-icon"><i class="fa-solid fa-piggy-bank"></i></div><h3>Build Saving Habits</h3><p>Create simple savings goals and estimate how long each may take based on your plan.</p></div>
+                <div class="feature-card reveal d3" data-info-key="understand-debt-credit"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">03</span><div class="feature-icon"><i class="fa-solid fa-credit-card"></i></div><h3>Understand Debt & Credit</h3><p>Learn how credit cards, BNPL and interest work — and how to avoid common pitfalls.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section process">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow">Simple learning flow</div>
+                <h2 class="section-title">Learn it. <span>Plan it. Improve it.</span></h2>
+                <p class="section-subtitle">BudgetBasics is designed around three simple steps so learners can understand financial concepts without feeling overwhelmed.</p>
+            </div>
+            <div class="process-grid">
+                <div class="process-card reveal d1" data-info-key="process-understand"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span>01</span><h3>Understand</h3><p>Learn the difference between income, expenses, requirements, wants and savings.</p></div>
+                <div class="process-card reveal d2" data-info-key="process-plan"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span>02</span><h3>Plan</h3><p>Use calculators and planners to explore sample financial situations.</p></div>
+                <div class="process-card reveal d3" data-info-key="process-improve"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span>03</span><h3>Improve</h3><p>Identify common money mistakes and discover practical habits for responsible spending.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container">
+        <div class="reviews-community reveal">
+            <div class="section-title-icon"><i class="fa-solid fa-comment-dots"></i> Visitor Reviews & Replies</div>
+            <div class="review-form-card">
+                <label for="reviewName" style="position:absolute;left:-9999px;">Your name</label>
+                <input type="text" id="reviewName" placeholder="Your name" autocomplete="off">
+                <label for="reviewMsg" style="position:absolute;left:-9999px;">Your review</label>
+                <textarea id="reviewMsg" rows="2" placeholder="Share your budgeting experience..."></textarea>
+                <button id="submitReviewBtn" type="button"><i class="fa-solid fa-paper-plane"></i> Post Review</button>
+            </div>
+            <div id="reviewsListContainer" style="max-height:500px;overflow-y:auto;padding-right:5px;"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="final-cta reveal">
+            <h2>Start building better money habits.</h2>
+            <p>Explore the learning modules, try the calculators and test your knowledge with BudgetBasics.</p>
+            <button class="btn-primary" onclick="showPage('basics')">Explore BudgetBasics <i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+    </div>
+</section>
+
+<!-- BASICS -->
+<section class="page" id="basics">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 01</div><h1 class="section-title reveal d1">Budgeting <span>Basics.</span></h1><p class="section-subtitle reveal d2">A budget is simply a plan for how money can be allocated between requirements, wants and savings.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card reveal d1" data-info-key="income"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-money-bill-wave"></i></div><h3>Income</h3><p>Money received from allowances, scholarships, internships, part-time work or other sources.</p></div>
+                <div class="feature-card reveal d1" data-info-key="fixed-expenses"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-house"></i></div><h3>Fixed Expenses</h3><p>Costs that generally remain similar each month, such as regular transport or fees.</p></div>
+                <div class="feature-card reveal d1" data-info-key="variable-expenses"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-arrows-left-right"></i></div><h3>Variable Expenses</h3><p>Spending that can change from month to month, such as food, shopping or entertainment.</p></div>
+                <div class="feature-card reveal d2" data-info-key="requirements"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-circle-check"></i></div><h3>Requirements</h3><p>Things that are important for daily life, education, health, transportation and similar needs.</p></div>
+                <div class="feature-card reveal d2" data-info-key="wants"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-bag-shopping"></i></div><h3>Wants</h3><p>Optional purchases that can often be delayed when money is needed elsewhere.</p></div>
+                <div class="feature-card reveal d2" data-info-key="savings-basics"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-piggy-bank"></i></div><h3>Savings</h3><p>Money intentionally kept aside for future goals, emergencies or planned purchases.</p></div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- NEEDS vs WANTS -->
+<section class="page" id="needs">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 02</div><h1 class="section-title reveal d1">Needs <span>vs Wants.</span></h1><p class="section-subtitle reveal d2">Learning to distinguish essential spending from optional spending.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+                <div class="reveal d1" style="padding:35px;border-radius:28px;background:#eaf4ef;border:1px solid #cce5d8;cursor:pointer;" data-info-key="needs-concept">
+                    <div style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:21px;margin-bottom:22px;background:#d2ecdf;color:#34785d;"><i class="fa-solid fa-shield-heart"></i></div>
+                    <h3 style="font-size:27px;margin-bottom:10px;font-family:'Playfair Display',serif;">Needs</h3>
+                    <p style="color:var(--muted);font-size:14px;">Items or services important for everyday living, education or essential responsibilities.</p>
+                </div>
+                <div class="reveal d2" style="padding:35px;border-radius:28px;background:#fbefdf;border:1px solid #ecd8b8;cursor:pointer;" data-info-key="wants-concept">
+                    <div style="width:54px;height:54px;border-radius:16px;display:grid;place-items:center;font-size:21px;margin-bottom:22px;background:#f3ddba;color:#8f6b22;"><i class="fa-solid fa-gift"></i></div>
+                    <h3 style="font-size:27px;margin-bottom:10px;font-family:'Playfair Display',serif;">Wants</h3>
+                    <p style="color:var(--muted);font-size:14px;">Optional purchases that improve comfort but can often be delayed.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- 50-30-20 -->
+<section class="page" id="rule">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 03</div><h1 class="section-title reveal d1">The <span>50-30-20</span> guideline.</h1><p class="section-subtitle reveal d2">A simple educational budgeting framework.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:.8fr 1.2fr;gap:22px;">
+                <div class="panel reveal d1">
+                    <h3 class="panel-title">Try the Calculator</h3>
+                    <p class="panel-description">Enter a sample monthly income.</p>
+                    <label for="ruleIncome" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Monthly Income</label>
+                    <input type="number" id="ruleIncome" placeholder="e.g. 30000" min="0" class="form-input" style="margin-bottom:17px;">
+                    <button class="btn-primary" onclick="calculateRule()" style="width:100%;">Calculate <i class="fa-solid fa-calculator"></i></button>
+                    <p id="ruleError" role="alert" style="color:#c96b65;font-size:11px;margin-top:12px;"></p>
+                </div>
+                <div class="panel reveal d2">
+                    <h3 class="panel-title">Educational Estimate</h3>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+                        <div style="padding:22px;background:var(--grad-navy);color:#fff;border-radius:18px;"><small style="color:#9da8ba;font-size:10px;text-transform:uppercase;">Needs · 50%</small><strong id="needsResult" style="display:block;margin-top:6px;font-size:24px;color:var(--gold-light);">Rs. 0</strong></div>
+                        <div style="padding:22px;background:var(--grad-navy);color:#fff;border-radius:18px;"><small style="color:#9da8ba;font-size:10px;text-transform:uppercase;">Wants · 30%</small><strong id="wantsResult" style="display:block;margin-top:6px;font-size:24px;color:var(--gold-light);">Rs. 0</strong></div>
+                        <div style="padding:22px;background:var(--grad-navy);color:#fff;border-radius:18px;"><small style="color:#9da8ba;font-size:10px;text-transform:uppercase;">Savings · 20%</small><strong id="savingResult" style="display:block;margin-top:6px;font-size:24px;color:var(--gold-light);">Rs. 0</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- SAVINGS -->
+<section class="page" id="savings">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 04</div><h1 class="section-title reveal d1">Give your savings <span>a goal.</span></h1><p class="section-subtitle reveal d2">Create multiple savings goals and track each one separately.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div style="display:grid;grid-template-columns:.85fr 1.15fr;gap:22px;">
+                <div class="reveal d1" style="min-height:390px;background:var(--grad-navy);color:#fff;border-radius:30px;display:grid;place-items:center;position:relative;overflow:hidden;">
+                    <div id="goalRing" style="width:220px;height:220px;border-radius:50%;display:grid;place-items:center;position:relative;background:conic-gradient(var(--gold) 0deg,var(--gold) var(--goal,0deg),rgba(255,255,255,.10) var(--goal,0deg));transition:background 1s var(--ease);">
+                        <div style="position:absolute;width:176px;height:176px;border-radius:50%;background:#0d1728;"></div>
+                        <div style="position:relative;z-index:2;text-align:center;"><strong id="goalPercent" style="display:block;font-family:'Playfair Display',serif;font-size:39px;color:var(--gold-light);">0%</strong><span style="color:#aab4c3;font-size:11px;">progress</span></div>
+                    </div>
+                </div>
+                <div class="panel reveal d2">
+                    <h3 class="panel-title">Savings Goal Planner</h3>
+                    <p class="panel-description">Add goals — they save automatically.</p>
+                    <label for="goalName" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Goal Name</label>
+                    <input id="goalName" placeholder="e.g. New Laptop" class="form-input" style="margin-bottom:17px;">
+                    <label for="targetAmount" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Target Amount</label>
+                    <input type="number" id="targetAmount" min="0" placeholder="e.g. 80000" class="form-input" style="margin-bottom:17px;">
+                    <label for="currentSavings" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Current Savings</label>
+                    <input type="number" id="currentSavings" min="0" placeholder="e.g. 20000" class="form-input" style="margin-bottom:17px;">
+                    <label for="monthlyContribution" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Monthly Contribution</label>
+                    <input type="number" id="monthlyContribution" min="0" placeholder="e.g. 5000" class="form-input" style="margin-bottom:17px;">
+                    <button class="btn-primary" onclick="calculateAndSaveGoal()" style="width:100%;"><i class="fa-solid fa-bullseye"></i> Calculate & Save Goal</button>
+                    <p id="savingsMessage" role="status" aria-live="polite" style="margin-top:16px;color:var(--muted);font-size:12px;"></p>
+                </div>
+            </div>
+            <div class="panel reveal" style="margin-top:22px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
+                    <h3 class="panel-title" style="margin:0;">📋 Your Saved Goals</h3>
+                    <span id="savedGoalsCount" style="font-size:12px;color:var(--muted);"></span>
+                </div>
+                <div id="savedGoalsList"></div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- EXPENSES -->
+<section class="page" id="expenses">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 05</div><h1 class="section-title reveal d1">Plan your <span>expenses.</span></h1><p class="section-subtitle reveal d2">Entries save automatically — reload anytime, they'll still be here.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div class="panel reveal">
+                <h3 class="panel-title">Add Expense Entry</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                    <div><label for="expenseDate" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Date</label><input type="date" id="expenseDate" class="form-input"></div>
+                    <div><label for="expenseCategory" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Category</label>
+                        <select id="expenseCategory" class="form-select"><option value="">Select</option><option>Food</option><option>Transport</option><option>Education</option><option>Entertainment</option><option>Shopping</option><option>Utilities</option><option>Miscellaneous</option></select>
+                    </div>
+                    <div><label for="expenseDescription" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Description</label><input id="expenseDescription" class="form-input" placeholder="e.g. College transport"></div>
+                    <div><label for="expenseAmount" style="display:block;font-size:12px;font-weight:800;margin-bottom:7px;">Amount</label><input type="number" id="expenseAmount" min="0" class="form-input" placeholder="e.g. 500"></div>
+                    <div style="grid-column:1/-1;"><button class="btn-primary" onclick="addExpense()" style="width:100%;" type="button" id="expenseSubmitBtn"><i class="fa-solid fa-plus"></i> Add Expense</button></div>
+                </div>
+                <div style="margin-top:28px;overflow:auto;">
+                    <table style="width:100%;border-collapse:collapse;min-width:600px;">
+                        <thead><tr style="border-bottom:1px solid var(--border);">
+                            <th style="padding:14px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);">Date</th>
+                            <th style="padding:14px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);">Category</th>
+                            <th style="padding:14px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);">Description</th>
+                            <th style="padding:14px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);">Amount</th>
+                            <th style="padding:14px;text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);">Action</th>
+                        </tr></thead>
+                        <tbody id="expenseTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="expense-toolbar">
+                    <button onclick="exportExpensesCSV()" class="btn-secondary" style="padding:12px 20px;font-size:13px;" type="button"><i class="fa-solid fa-file-csv"></i> Export CSV</button>
+                    <button onclick="clearAllExpenses()" class="btn-secondary" style="padding:12px 20px;font-size:13px;" type="button"><i class="fa-solid fa-trash"></i> Clear All</button>
+                    <div style="min-width:220px;padding:20px;background:var(--grad-navy);color:#fff;border-radius:18px;"><small style="color:#9da8ba;">Total Planned Expenses</small><strong id="expenseTotal" style="display:block;color:var(--gold-light);font-size:27px;">Rs. 0</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- DEBT -->
+<section class="page" id="debt">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 06</div><h1 class="section-title reveal d1">Debt & Credit <span>Basics.</span></h1><p class="section-subtitle reveal d2">Understand how credit cards, buy-now-pay-later and interest work — so you can borrow responsibly and avoid common pitfalls.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card reveal d1" data-info-key="credit-cards"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">01</span><div class="feature-icon"><i class="fa-solid fa-credit-card"></i></div><h3>Credit Cards</h3><p>A credit card lets you spend money now and pay it back later. If you don't pay the full balance, interest is charged on the remainder.</p></div>
+                <div class="feature-card reveal d1" data-info-key="bnpl"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">02</span><div class="feature-icon"><i class="fa-solid fa-bag-shopping"></i></div><h3>Buy-Now-Pay-Later</h3><p>BNPL splits a purchase into installments. It can feel free, but missed payments often trigger fees, penalties and credit-impacting defaults.</p></div>
+                <div class="feature-card reveal d1" data-info-key="interest-rates"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">03</span><div class="feature-icon"><i class="fa-solid fa-percent"></i></div><h3>Interest Rates</h3><p>Interest is the cost of borrowing. A higher rate means you repay more over time — even if the original amount stays the same.</p></div>
+                <div class="feature-card reveal d2" data-info-key="minimum-payments"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">04</span><div class="feature-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><h3>Minimum Payments</h3><p>Paying only the minimum keeps you in debt for longer and costs more overall. Aim to pay the full balance when possible.</p></div>
+                <div class="feature-card reveal d2" data-info-key="credit-score"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">05</span><div class="feature-icon"><i class="fa-solid fa-chart-line"></i></div><h3>Credit Score</h3><p>Your credit score reflects how reliably you repay. On-time payments build it; late or missed payments damage it for years.</p></div>
+                <div class="feature-card reveal d2" data-info-key="debt-traps"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><span class="feature-number">06</span><div class="feature-icon"><i class="fa-solid fa-triangle-exclamation"></i></div><h3>Debt Traps</h3><p>Borrowing to repay other debt or relying on credit for essentials is a warning sign. Pause, plan, and seek help if this becomes a pattern.</p></div>
+            </div>
+            <div class="panel reveal" style="margin-top:40px;">
+                <h3 class="panel-title">⚠️ A Simple Rule of Thumb</h3>
+                <p class="panel-description">Educational guidance — not personal financial advice.</p>
+                <ul style="list-style:none;display:grid;gap:12px;">
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;"><i class="fa-solid fa-circle-check" style="color:var(--gold);margin-top:4px;"></i><span>Pay the <strong>full credit card balance</strong> every month whenever possible.</span></li>
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;"><i class="fa-solid fa-circle-check" style="color:var(--gold);margin-top:4px;"></i><span>Only use BNPL for items you <strong>already planned to buy</strong> — never for impulse purchases.</span></li>
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;"><i class="fa-solid fa-circle-check" style="color:var(--gold);margin-top:4px;"></i><span>Borrowing to cover <strong>needs</strong> is a red flag — revisit your budget instead.</span></li>
+                    <li style="display:flex;gap:12px;align-items:flex-start;font-size:14px;"><i class="fa-solid fa-circle-check" style="color:var(--gold);margin-top:4px;"></i><span>Total debt repayments should stay well below <strong>20%</strong> of your income.</span></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- TIPS -->
+<section class="page" id="tips">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 07</div><h1 class="section-title reveal d1">Tips & <span>checklists.</span></h1><p class="section-subtitle reveal d2">Practical tips for common student spending habits.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card reveal d1" data-info-key="before-you-buy"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-cart-shopping"></i></div><h3>Before You Buy</h3><p>A quick pause-and-decide checklist for non-essential purchases.</p><button onclick="event.stopPropagation();downloadChecklist('before-you-buy')" class="btn-secondary" style="margin-top:14px;font-size:12px;padding:10px 14px;" type="button"><i class="fa-solid fa-download"></i> Save checklist</button></div>
+                <div class="feature-card reveal d2" data-info-key="savings-starter"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-piggy-bank"></i></div><h3>Monthly Savings Starter</h3><p>Simple steps to begin saving consistently without feeling restricted.</p><button onclick="event.stopPropagation();downloadChecklist('savings-starter')" class="btn-secondary" style="margin-top:14px;font-size:12px;padding:10px 14px;" type="button"><i class="fa-solid fa-download"></i> Save checklist</button></div>
+                <div class="feature-card reveal d3" data-info-key="weekly-review"><span class="info-hint"><i class="fa-solid fa-arrow-up-right-from-square"></i></span><div class="feature-icon"><i class="fa-solid fa-receipt"></i></div><h3>Weekly Expense Review</h3><p>Ten minutes a week can make spending patterns much clearer.</p><button onclick="event.stopPropagation();downloadChecklist('weekly-review')" class="btn-secondary" style="margin-top:14px;font-size:12px;padding:10px 14px;" type="button"><i class="fa-solid fa-download"></i> Save checklist</button></div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- GALLERY -->
+<section class="page" id="gallery">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Module 08</div><h1 class="section-title reveal d1">Learning <span>Gallery.</span></h1><p class="section-subtitle reveal d2">Visual explanations for budgeting concepts.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div class="feature-grid">
+                <div class="feature-card reveal d1" data-info-key="split-50-30-20" style="background:var(--grad-navy);color:#fff;border-color:transparent;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:27px;color:var(--gold-light);">50 · 30 · 20</h3>
+                    <p style="color:#b3bdcc;">A simple budgeting guideline</p>
+                    <h4 style="margin-top:20px;color:#fff;">The 50-30-20 Split</h4>
+                    <p style="color:#b3bdcc;font-size:12px;">Framework for needs, wants and savings.</p>
+                </div>
+                <div class="feature-card reveal d1" data-info-key="needs-wants-gallery" style="background:var(--grad-navy);color:#fff;border-color:transparent;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:27px;color:var(--gold-light);">Need or Want?</h3>
+                    <p style="color:#b3bdcc;">Pause before purchase</p>
+                    <h4 style="margin-top:20px;color:#fff;">Needs vs Wants</h4>
+                    <p style="color:#b3bdcc;font-size:12px;">Identify essential vs optional spending.</p>
+                </div>
+                <div class="feature-card reveal d1" data-info-key="savings-goal-gallery" style="background:var(--grad-navy);color:#fff;border-color:transparent;">
+                    <h3 style="font-family:'Playfair Display',serif;font-size:27px;color:var(--gold-light);">Save With Purpose</h3>
+                    <p style="color:#b3bdcc;">Give savings a target</p>
+                    <h4 style="margin-top:20px;color:#fff;">Savings Goal</h4>
+                    <p style="color:#b3bdcc;font-size:12px;">Define target and timeline.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+<!-- QUIZ -->
+<section class="page" id="quiz">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Knowledge Check</div><h1 class="section-title reveal d1">Test your <span>knowledge.</span></h1><p class="section-subtitle reveal d2">5 quick questions covering budgeting basics, needs vs wants, and the 50-30-20 rule.</p></div></div>
+    <section class="section" style="padding-top:30px;"><div class="container"><div class="panel reveal"><div id="quizContainer"></div></div></div></section>
+</section>
+
+<!-- CONTACT -->
+<section class="page" id="contact">
+    <div class="inner-hero"><div class="container"><div class="eyebrow reveal">Get in Touch</div><h1 class="section-title reveal d1">Let's <span>connect.</span></h1><p class="section-subtitle reveal d2">Questions, feedback or suggestions? Send us a message — our team will get back to you.</p></div></div>
+    <section class="section" style="padding-top:30px;">
+        <div class="container">
+            <div class="contact-cards-grid">
+                <div class="contact-info-card reveal d1"><div class="ci-icon"><i class="fa-solid fa-envelope"></i></div><h3>Email Us</h3><p><a href="mailto:budgetbasics00@gmail.com">budgetbasics00@gmail.com</a></p></div>
+                <div class="contact-info-card reveal d1"><div class="ci-icon"><i class="fa-solid fa-phone"></i></div><h3>Call Us</h3><p><a href="tel:+923242704078">+92 324 2704078</a></p></div>
+                <div class="contact-info-card reveal d2"><div class="ci-icon"><i class="fa-solid fa-location-dot"></i></div><h3>Location</h3><p>Karachi · Pakistan</p></div>
+                <div class="contact-info-card reveal d2"><div class="ci-icon"><i class="fa-solid fa-clock"></i></div><h3>Response Time</h3><p>Usually within 24 hours</p></div>
+            </div>
+            <div class="contact-main-grid">
+                <div class="contact-form-wrap reveal d1">
+                    <h3>Send us a Message</h3>
+                    <p>Fill the form below and we'll get back to you via email.</p>
+                    <form id="contactForm" onsubmit="submitContact(event)" novalidate>
+                        <div class="form-row">
+                            <div class="form-field"><label for="contactName">Full Name <span>*</span></label><input type="text" id="contactName" name="name" class="form-input" placeholder="Your name" required></div>
+                            <div class="form-field"><label for="contactEmail">Email Address <span>*</span></label><input type="email" id="contactEmail" name="email" class="form-input" placeholder="you@example.com" required></div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-field"><label for="contactPhone">Phone (optional)</label><input type="tel" id="contactPhone" name="phone" class="form-input" placeholder="+92 3XX XXXXXXX"></div>
+                            <div class="form-field"><label for="contactSubject">Subject <span>*</span></label>
+                                <select id="contactSubject" name="subject" class="form-select" required>
+                                    <option value="">Choose a subject</option><option>General Feedback</option><option>Budget Question</option><option>Website Issue</option><option>Feature Request</option><option>Collaboration</option><option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-field">
+                            <label id="ratingLabel">How would you rate BudgetBasics? <span>*</span></label>
+                            <div class="star-rating" role="radiogroup" aria-labelledby="ratingLabel">
+                                <input type="radio" id="r1" name="rating" value="1" required><label for="r1">1</label>
+                                <input type="radio" id="r2" name="rating" value="2"><label for="r2">2</label>
+                                <input type="radio" id="r3" name="rating" value="3"><label for="r3">3</label>
+                                <input type="radio" id="r4" name="rating" value="4"><label for="r4">4</label>
+                                <input type="radio" id="r5" name="rating" value="5"><label for="r5">5</label>
+                            </div>
+                        </div>
+                        <div class="form-field"><label for="contactMessage">Your Message <span>*</span></label><textarea id="contactMessage" name="message" class="form-textarea" placeholder="Write your message here..." required></textarea></div>
+                        <button type="submit" class="contact-submit-btn" id="contactSubmitBtn"><i class="fa-solid fa-paper-plane"></i> Send Message</button>
+                        <div class="form-feedback" id="contactFeedback" role="status" aria-live="polite"></div>
+                    </form>
+                </div>
+                <div class="contact-map-wrap reveal d2">
+                    <iframe title="Karachi map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d462560.3!2d66.7!3d24.86!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33e06651d4bbf%3A0x9cf92f44555a0c23!2sKarachi%2C%20Pakistan!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s" allowfullscreen="" loading="lazy"></iframe>
+                    <div class="contact-map-info">
+                        <h4><i class="fa-solid fa-location-dot"></i> BudgetBasics HQ</h4>
+                        <p>Karachi, Pakistan — Aptech Project Assignment</p>
+                        <div class="map-social">
+                            <a href="#" onclick="return false;" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="#" onclick="return false;" aria-label="X"><i class="fa-brands fa-x-twitter"></i></a>
+                            <a href="#" onclick="return false;" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                            <a href="#" onclick="return false;" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-faq reveal">
+                <h3>Frequently Asked <span style="background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;">Questions</span></h3>
+                <div class="faq-grid">
+                    <div class="faq-item"><h4><i class="fa-solid fa-question"></i> Is BudgetBasics free to use?</h4><p>Yes — 100% free educational platform for students and learners.</p></div>
+                    <div class="faq-item"><h4><i class="fa-solid fa-shield-halved"></i> Do you store my data?</h4><p>No. All calculators run locally in your browser. Contact form only sends your message to our email.</p></div>
+                    <div class="faq-item"><h4><i class="fa-solid fa-clock"></i> How long for a reply?</h4><p>Usually within 24 hours on business days.</p></div>
+                    <div class="faq-item"><h4><i class="fa-solid fa-graduation-cap"></i> Can I use this for teaching?</h4><p>Absolutely! BudgetBasics is designed for students and educators. Feel free to share.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div style="display:flex;align-items:center;gap:11px;">
+                    <div style="width:45px;height:45px;border-radius:14px;background:var(--grad-gold);display:grid;place-items:center;color:var(--navy);font-size:18px;"><i class="fa-solid fa-b"></i></div>
+                    <div style="font-size:17px;font-weight:800;">BudgetBasics<small style="display:block;font-size:9px;color:#768196;letter-spacing:1.6px;text-transform:uppercase;margin-top:-2px;">Finance Management Project</small></div>
+                </div>
+                <p>A student-friendly educational website for learning budgeting, saving and responsible spending habits. Built as an Aptech Project Assignment.</p>
+            </div>
+            <div>
+                <div class="footer-title">Learn Budgeting</div>
+                <div class="footer-links">
+                    <button onclick="showPage('basics')">Budgeting Basics</button>
+                    <button onclick="showPage('needs')">Needs vs Wants</button>
+                    <button onclick="showPage('rule')">50-30-20</button>
+                    <button onclick="showPage('debt')">Debt & Credit</button>
+                </div>
+            </div>
+            <div>
+                <div class="footer-title">Practice Planning</div>
+                <div class="footer-links">
+                    <button onclick="showPage('savings')">Savings Goals</button>
+                    <button onclick="showPage('expenses')">Expense Planner</button>
+                    <button onclick="showPage('tips')">Tips & Checklists</button>
+                </div>
+            </div>
+            <div>
+                <div class="footer-title">Explore & Help</div>
+                <div class="footer-links">
+                    <button onclick="showPage('gallery')">Learning Gallery</button>
+                    <button onclick="showPage('quiz')">Knowledge Quiz</button>
+                    <button onclick="openAiPanel()">BudgetBee AI</button>
+                    <button onclick="showPage('contact')">Contact Us</button>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:45px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;gap:20px;color:#687487;font-size:10px;flex-wrap:wrap;">
+            <span>© 2026 BudgetBasics — Finance Management Project · Aptech Assignment</span>
+            <div style="display:flex;gap:16px;flex-wrap:wrap;">
+                <button onclick="scrollToTop()" style="background:none;border:0;color:#687487;font-size:10px;cursor:pointer;" type="button">Back to Top</button>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- REGISTER MODAL -->
+<div class="register-overlay" id="registerOverlay" role="dialog" aria-labelledby="registerTitle">
+    <div class="register-box">
+        <div class="register-brand">
+            <div class="brand-mark"><i class="fa-solid fa-b" style="font-size:24px;color:#0a1220;"></i></div>
+            <div><h2>BudgetBasics</h2><small>Finance Management</small></div>
+        </div>
+        <h2 class="register-title" id="registerTitle">Welcome! <span>Create your account</span></h2>
+        <p class="register-subtitle">Register to unlock all features. Your data is safe — password is never stored or shared.</p>
+        <form class="register-form" id="registerForm" novalidate>
+            <div class="form-field">
+                <label for="regUsername">Username <span>*</span></label>
+                <input type="text" id="regUsername" name="username" class="form-input" placeholder="e.g. ahmed_khan" required minlength="2" autocomplete="username">
+            </div>
+            <div class="form-field">
+                <label for="regEmail">Email <span>*</span></label>
+                <input type="email" id="regEmail" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
+            </div>
+            <div class="form-field">
+                <label for="regPassword">Password <span>*</span></label>
+                <input type="password" id="regPassword" name="password" class="form-input" placeholder="At least 4 characters" required minlength="4" autocomplete="new-password">
+            </div>
+            <button type="submit" class="register-submit" id="registerSubmitBtn"><i class="fa-solid fa-user-plus"></i> Register & Continue</button>
+            <button type="button" class="skip-register" id="skipRegisterBtn">Continue as Guest</button>
+            <div class="register-feedback" id="registerFeedback" role="status" aria-live="polite"></div>
+        </form>
+    </div>
+</div>
+
+<!-- INFO MODAL -->
+<div class="info-modal" id="infoModal" role="dialog" aria-labelledby="infoTitle">
+    <div class="info-modal-box">
+        <button class="info-modal-close" onclick="closeInfoModal()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        <div class="info-modal-icon" id="infoIcon"><i class="fa-solid fa-lightbulb"></i></div>
+        <span class="info-modal-tag" id="infoTag">Educational</span>
+        <h2 class="info-modal-title" id="infoTitle">Title</h2>
+        <p class="info-modal-body" id="infoBody"></p>
+        <ul class="info-modal-points" id="infoPoints"></ul>
+        <div class="info-modal-note" id="infoNote"></div>
+        <div class="info-modal-actions" id="infoActions"></div>
+    </div>
+</div>
+
+<!-- AI WIDGET -->
+<div class="ai-dock" id="aiDock">
+    <div class="ai-panel" id="aiPanel" role="dialog" aria-label="BudgetBee AI assistant">
+        <div style="padding:16px 18px;background:var(--grad-navy);color:#fff;display:flex;align-items:center;gap:12px;">
+            <div style="width:40px;height:40px;border-radius:13px;background:var(--grad-gold);color:var(--navy);display:grid;place-items:center;font-size:16px;"><i class="fa-solid fa-b"></i></div>
+            <div style="flex:1;"><strong style="display:block;font-size:13px;">BudgetBee AI</strong><span style="font-size:10px;color:#9fb0c6;">Online · Educational</span></div>
+            <button onclick="toggleAiPanel()" aria-label="Close assistant" type="button" style="width:32px;height:32px;border-radius:10px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#dfe6ef;cursor:pointer;">✕</button>
+        </div>
+        <div id="aiMessages" role="log" aria-live="polite" style="padding:18px;max-height:290px;overflow:auto;display:flex;flex-direction:column;gap:2px;">
+            <div style="max-width:78%;padding:12px 15px;border-radius:15px;font-size:12px;background:var(--cream-2);color:var(--text);">Assalam-o-Alaikum 👋 I'm BudgetBee. Ask me anything about budgeting, savings, needs vs wants, debt, 50-30-20, or how to use this website!</div>
+        </div>
+        <div style="padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:6px;">
+            <button class="ai-chip" onclick="useAiSuggestion('How to make a budget?')" type="button">How to budget?</button>
+            <button class="ai-chip" onclick="useAiSuggestion('What is a need?')" type="button">What is a need?</button>
+            <button class="ai-chip" onclick="useAiSuggestion('How to save money?')" type="button">How to save?</button>
+            <button class="ai-chip" onclick="useAiSuggestion('Explain credit cards')" type="button">Credit cards</button>
+        </div>
+        <div style="display:flex;gap:8px;padding:13px;border-top:1px solid var(--border);">
+            <label for="aiInput" style="position:absolute;left:-9999px;">Ask BudgetBee</label>
+            <input id="aiInput" placeholder="Ask BudgetBee..." onkeydown="if(event.key==='Enter') sendAiMessage()" class="form-input" style="margin:0;">
+            <button onclick="sendAiMessage()" aria-label="Send message" type="button" style="width:46px;border:0;border-radius:12px;background:var(--navy);color:#fff;cursor:pointer;">→</button>
+        </div>
+    </div>
+    <button class="ai-fab" onclick="toggleAiPanel()" aria-label="Open BudgetBee assistant" type="button">
+        <i class="fa-solid fa-b" style="position:relative;z-index:3;"></i>
+        <span style="position:absolute;top:-3px;right:-3px;min-width:22px;height:22px;padding:0 5px;border-radius:100px;background:#c96b65;color:#fff;font-size:9px;font-weight:900;display:grid;place-items:center;border:2px solid var(--cream);">AI</span>
+    </button>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast" role="status" aria-live="polite"><i class="fa-solid fa-check-circle"></i><span>Done</span></div>
+
+<script>
+/* =========================================================
+   HELPERS
+========================================================= */
+function escapeHTML(text) {
+    if (text === null || text === undefined) return '';
+    const div = document.createElement("div");
+    div.textContent = String(text);
+    return div.innerHTML;
+}
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    if (!t) return;
+    const span = t.querySelector("span");
+    if (span) span.textContent = msg;
+    t.classList.add("show");
+    clearTimeout(window._toastTimer);
+    window._toastTimer = setTimeout(() => t.classList.remove("show"), 2800);
+}
+
+/* =========================================================
+   INFO DATABASE — Detailed content for each card
+========================================================= */
+const infoDatabase = {
+    "understand-budgeting": {
+        icon: "fa-chart-pie", tag: "Foundation Module",
+        title: "Understanding <span>Budgeting</span>",
+        body: "A budget is a plan that tells your money where to go before you spend it. It links income to real priorities — transport, food, education — while still leaving space for the things you enjoy.",
+        points: ["Income sets the size of your monthly plan","Fixed expenses stay steady each month","Variable expenses change based on choices","Needs come before wants — both can be planned","Savings is a category, not what's left over"],
+        note: "A budget is a tool for freedom, not restriction — it makes your money match your priorities.",
+        actions: [{label:"Explore Module", page:"basics", primary:true}],
+        download: "UNDERSTANDING BUDGETING\n\nA budget is a plan for how income is allocated between needs, wants and savings. Start by tracking income, then list fixed and variable expenses, then decide how much to save.\n\nKey steps:\n1. Track your income sources\n2. List fixed expenses (rent, transport)\n3. List variable expenses (food, shopping)\n4. Separate needs from wants\n5. Assign a savings amount each month"
+    },
+    "build-saving-habits": {
+        icon: "fa-piggy-bank", tag: "Habit Building",
+        title: "Build <span>Saving Habits</span>",
+        body: "Saving works best when it is automatic and specific. A small consistent amount set aside each month builds momentum far faster than a large amount that never quite happens.",
+        points: ["Pick a specific, named target","Save right after receiving income","Track progress every week","Increase slowly over time","Never skip a month — consistency beats size"],
+        note: "Consistency beats size — small monthly savings kept up outperform occasional large deposits.",
+        actions: [{label:"Open Savings Planner", page:"savings", primary:true}],
+        download: "BUILDING SAVING HABITS\n\nSaving becomes easier when it's automatic and specific.\n\nRecommended steps:\n1. Name your goal (e.g. 'New Laptop')\n2. Set a target amount\n3. Decide a monthly contribution\n4. Save right after income arrives\n5. Review progress weekly\n6. Increase slowly as income grows"
+    },
+    "understand-debt-credit": {
+        icon: "fa-credit-card", tag: "Credit Awareness",
+        title: "Understand <span>Debt & Credit</span>",
+        body: "Debt is money you borrow and must repay. Credit is your ability to borrow. Used well, credit builds trust; used poorly, it can trap you in cycles of repayment.",
+        points: ["Credit cards let you spend now, pay later","BNPL splits purchases into installments","Interest is the cost of borrowing","Paying only minimums keeps you in debt longer","On-time payments build your credit score"],
+        note: "Total debt repayments should stay well below 20% of your income.",
+        actions: [{label:"Open Debt Module", page:"debt", primary:true}],
+        download: "UNDERSTANDING DEBT & CREDIT\n\nDebt is money you borrow; credit is your ability to borrow.\n\nKey rules:\n1. Pay full credit card balance each month\n2. Only use BNPL for planned purchases\n3. Keep total repayments below 20% of income\n4. Never borrow to cover essentials\n5. On-time payments build credit score"
+    },
+    "process-understand": {
+        icon: "fa-eye", tag: "Step 01",
+        title: "Step 1 — <span>Understand</span>",
+        body: "Before you can plan, you need to see the whole picture. Understanding where money comes from and where it goes is the base layer of every good budget.",
+        points: ["Identify all income sources","Separate fixed from variable costs","Distinguish needs from wants","Notice where savings naturally fits"],
+        note: "You can't improve what you haven't clearly seen.",
+        actions: [{label:"Open Budgeting Basics", page:"basics", primary:true}],
+        download: "STEP 1 — UNDERSTAND\n\nSee the full picture of your money.\n\n1. List all income sources\n2. List fixed expenses (steady)\n3. List variable expenses (changing)\n4. Sort between needs and wants\n5. Identify a savings amount"
+    },
+    "process-plan": {
+        icon: "fa-compass-drafting", tag: "Step 02",
+        title: "Step 2 — <span>Plan</span>",
+        body: "Planning turns awareness into decisions. Use the 50-30-20 guideline, savings planner and expense tracker to explore how different choices affect your monthly balance.",
+        points: ["Try the 50-30-20 calculator","Set specific savings goals","Log sample expenses","Compare needs vs wants side-by-side"],
+        note: "The goal is a workable direction, not perfection.",
+        actions: [{label:"Open 50-30-20 Calculator", page:"rule", primary:true}],
+        download: "STEP 2 — PLAN\n\nTurn awareness into decisions.\n\n1. Use the 50-30-20 calculator\n2. Set specific savings goals\n3. Log sample expenses\n4. Compare needs vs wants\n5. Adjust based on reality"
+    },
+    "process-improve": {
+        icon: "fa-arrow-trend-up", tag: "Step 03",
+        title: "Step 3 — <span>Improve</span>",
+        body: "Small habits beat big intentions. Reviewing spending weekly and correcting tiny leaks is what keeps a budget working month after month.",
+        points: ["Weekly expense review (10 minutes)","Check for impulse spending","Cancel unused subscriptions","Increase savings gradually"],
+        note: "A small change you keep is worth more than a big change you abandon.",
+        actions: [{label:"Open Tips & Checklists", page:"tips", primary:true}],
+        download: "STEP 3 — IMPROVE\n\nSmall habits beat big intentions.\n\n1. Weekly expense review\n2. Check impulse spending\n3. Cancel unused subscriptions\n4. Increase savings gradually\n5. Keep going — consistency wins"
+    },
+    "income": {
+        icon: "fa-money-bill-wave", tag: "Concept · Income",
+        title: "<span>Income</span>",
+        body: "Income is the starting point of every budget. It sets how much can be planned each month across needs, wants and savings.",
+        points: ["Allowances and pocket money","Scholarships and stipends","Internships and part-time work","Gifts and small side earnings"],
+        note: "Plan around your smallest reliable monthly amount to stay safe.",
+        actions: [{label:"Try the Calculator", page:"rule", primary:true}],
+        download: "INCOME\n\nMoney received from any source.\n\nCommon sources:\n- Allowances\n- Scholarships\n- Internships\n- Part-time work\n- Gifts\n\nPlan around your SMALLEST reliable amount."
+    },
+    "fixed-expenses": {
+        icon: "fa-house", tag: "Concept · Fixed",
+        title: "<span>Fixed Expenses</span>",
+        body: "Fixed expenses are the same — or nearly the same — each month. Because they are predictable, they are the easiest category to plan around.",
+        points: ["Rent or hostel fees","Regular transport or fuel","Tuition or class fees","Monthly subscriptions"],
+        note: "Even small fixed costs add up. List every regular payment.",
+        actions: [{label:"Open Expense Planner", page:"expenses", primary:true}],
+        download: "FIXED EXPENSES\n\nSame amount each month, predictable.\n\nExamples:\n- Rent\n- Transport\n- Tuition\n- Subscriptions\n\nBecause predictable, they are easiest to plan."
+    },
+    "variable-expenses": {
+        icon: "fa-arrows-left-right", tag: "Concept · Variable",
+        title: "<span>Variable Expenses</span>",
+        body: "Variable expenses rise and fall with your daily choices. They are the easiest place to find extra savings when money is tight.",
+        points: ["Food and groceries","Shopping and personal items","Entertainment and outings","Small everyday purchases"],
+        note: "A soft weekly limit keeps variable spending visible and predictable.",
+        actions: [{label:"Open Expense Planner", page:"expenses", primary:true}],
+        download: "VARIABLE EXPENSES\n\nChange month to month based on choices.\n\nExamples:\n- Food\n- Shopping\n- Entertainment\n- Small purchases\n\nEasiest place to save extra when needed."
+    },
+    "requirements": {
+        icon: "fa-circle-check", tag: "Concept · Needs",
+        title: "<span>Requirements (Needs)</span>",
+        body: "Needs are the foundation of your budget. These should be covered first, before any optional spending.",
+        points: ["Basic food and water","Transport to college","Books and educational materials","Required bills and fees"],
+        note: "Needs come first — but their size can still be optimised.",
+        actions: [{label:"Open Needs vs Wants", page:"needs", primary:true}],
+        download: "REQUIREMENTS (NEEDS)\n\nEssential for daily life and responsibilities.\n\nExamples:\n- Basic food\n- Transport\n- Books\n- Required bills\n\nCover these first in your budget."
+    },
+    "wants": {
+        icon: "fa-bag-shopping", tag: "Concept · Wants",
+        title: "<span>Wants</span>",
+        body: "Wants make life enjoyable — the goal is not to remove them, but to plan for them so they don't quietly crowd out your needs.",
+        points: ["Streaming and entertainment","Eating out and treats","Upgrades and gadgets","Impulse buys during sales"],
+        note: "The 48-hour rule can change many want decisions.",
+        actions: [{label:"Open Needs vs Wants", page:"needs", primary:true}],
+        download: "WANTS\n\nOptional purchases that improve comfort.\n\nExamples:\n- Streaming\n- Eating out\n- Gadgets\n- Impulse buys\n\nPlan for them — don't let them crowd out needs."
+    },
+    "savings-basics": {
+        icon: "fa-piggy-bank", tag: "Concept · Savings",
+        title: "<span>Savings</span>",
+        body: "Savings is a category — not whatever is left at the end. Treating it as a planned expense makes saving happen reliably.",
+        points: ["Emergency buffer","Named goals (laptop, trip, course)","Short-term savings","Long-term savings"],
+        note: "Even small monthly amounts, kept up, build real momentum.",
+        actions: [{label:"Open Savings Planner", page:"savings", primary:true}],
+        download: "SAVINGS\n\nA planned category, not leftover money.\n\nTypes:\n- Emergency buffer\n- Specific goals\n- Short-term\n- Long-term\n\nEven small amounts, kept up, build momentum."
+    },
+    "needs-concept": {
+        icon: "fa-shield-heart", tag: "Concept · Needs",
+        title: "<span>Needs</span>",
+        body: "Needs are essentials — things that keep your life, education and health running. They should be covered first in any budget.",
+        points: ["Basic transportation","Educational materials","Essential food","Required bills and fees"],
+        note: "Context matters — a laptop can be a need if required for studies.",
+        actions: [{label:"Test with Quiz", page:"quiz", primary:true}],
+        download: "NEEDS\n\nEssential items for daily life.\n\nExamples:\n- Basic transport\n- Study materials\n- Essential food\n- Required bills"
+    },
+    "wants-concept": {
+        icon: "fa-gift", tag: "Concept · Wants",
+        title: "<span>Wants</span>",
+        body: "Wants improve comfort and enjoyment but are optional. They can usually be delayed when money is needed elsewhere.",
+        points: ["Extra shopping","Entertainment","Non-essential upgrades","Impulse purchases"],
+        note: "The 48-hour pause rule helps most people avoid buyer's remorse.",
+        actions: [{label:"Test with Quiz", page:"quiz", primary:true}],
+        download: "WANTS\n\nOptional purchases for comfort/enjoyment.\n\nExamples:\n- Extra shopping\n- Entertainment\n- Upgrades\n- Impulse buys\n\nDelay when money needed elsewhere."
+    },
+    "credit-cards": {
+        icon: "fa-credit-card", tag: "Debt · Credit Cards",
+        title: "<span>Credit Cards</span>",
+        body: "A credit card lets you spend now and pay later. If you don't pay the full balance by the due date, high interest is charged on the remainder — often 20-40% annually.",
+        points: ["Pay full balance monthly to avoid interest","Minimum payments keep you in debt for years","High APR compounds if unpaid","Builds credit score with on-time payments"],
+        note: "A credit card is a tool, not free money. Always treat it like your own cash.",
+        actions: [{label:"Back to Debt Module", page:"debt", primary:true}],
+        download: "CREDIT CARDS\n\nSpend now, pay later.\n\nRules:\n1. Pay FULL balance monthly\n2. Avoid minimum-only payments\n3. Watch out for high APR\n4. On-time payment builds score"
+    },
+    "bnpl": {
+        icon: "fa-bag-shopping", tag: "Debt · BNPL",
+        title: "Buy-Now-<span>Pay-Later</span>",
+        body: "BNPL splits a purchase into installments, often interest-free. But missed payments trigger late fees, penalties and can damage your credit file.",
+        points: ["Feels free but has hidden risks","Missed payment = penalties","Multiple BNPL plans add up","Only use for PLANNED purchases"],
+        note: "Never use BNPL for impulse buys — it's still debt.",
+        actions: [{label:"Back to Debt Module", page:"debt", primary:true}],
+        download: "BUY-NOW-PAY-LATER\n\nSplits a purchase into installments.\n\nRisks:\n- Late fees on missed payments\n- Credit damage\n- Multiple plans add up\n\nOnly for pre-planned purchases."
+    },
+    "interest-rates": {
+        icon: "fa-percent", tag: "Debt · Interest",
+        title: "<span>Interest Rates</span>",
+        body: "Interest is the cost of borrowing. A higher rate means you repay more over time — even if the original amount stays the same.",
+        points: ["APR = Annual Percentage Rate","Compounds over time","Even small balances grow if unpaid","Compare rates before borrowing"],
+        note: "Rs. 10,000 at 30% APR unpaid for a year becomes ~Rs. 13,000.",
+        actions: [{label:"Back to Debt Module", page:"debt", primary:true}],
+        download: "INTEREST RATES\n\nThe cost of borrowing.\n\nKey facts:\n- Higher rate = higher cost\n- Compounds over time\n- Unpaid balance grows\n\nCompare rates before borrowing."
+    },
+    "minimum-payments": {
+        icon: "fa-clock-rotate-left", tag: "Debt · Minimum Payments",
+        title: "<span>Minimum Payments</span>",
+        body: "Paying only the minimum keeps you in debt for longer and costs more overall. The minimum mostly covers interest — not the balance.",
+        points: ["Keeps you in debt longer","Total interest grows massively","Slow progress on principal","Pay more than minimum when possible"],
+        note: "A Rs. 50,000 balance at minimum payments can take years to clear.",
+        actions: [{label:"Back to Debt Module", page:"debt", primary:true}],
+        download: "MINIMUM PAYMENTS\n\nPaying only minimum keeps you in debt longer.\n\nBetter approach:\n- Pay more than minimum\n- Pay full balance if possible\n- Target highest-rate debt first"
+    },
+    "credit-score": {
+        icon: "fa-chart-line", tag: "Debt · Credit Score",
+        title: "<span>Credit Score</span>",
+        body: "Your credit score reflects how reliably you repay. On-time payments build it; late or missed payments damage it for years.",
+        points: ["On-time payments build score","Missed payments damage score","Score affects loan approval","Check your score periodically"],
+        note: "A good credit score can save you thousands in future loan interest.",
+        actions: [{label:"Back to Debt Module", page:"debt", primary:true}],
+        download: "CREDIT SCORE\n\nReflects repayment reliability.\n\nBuild it by:\n- Paying on time\n- Keeping balances low\n- Not maxing cards\n\nDamage it by:\n- Late payments\n- Defaults\n- High utilization"
+    },
+    "debt-traps": {
+        icon: "fa-triangle-exclamation", tag: "Debt · Warning",
+        title: "<span>Debt Traps</span>",
+        body: "Borrowing to repay other debt or relying on credit for essentials is a warning sign. Pause, plan and seek help if this becomes a pattern.",
+        points: ["Borrowing to repay debt = red flag","Credit for essentials = danger sign","Multiple missed payments = crisis","Seek help early, not late"],
+        note: "If debt repayments exceed 20% of income, it's time to reassess.",
+        actions: [{label:"Back to Debt Module", page:"debt", primary:true}],
+        download: "DEBT TRAPS\n\nWarning signs:\n- Borrowing to repay debt\n- Credit for essentials\n- Multiple missed payments\n\nAction:\n- Pause\n- Plan\n- Seek help"
+    },
+    "before-you-buy": {
+        icon: "fa-cart-shopping", tag: "Checklist",
+        title: "Before You <span>Buy</span>",
+        body: "A 48-hour pause changes many purchase decisions. This checklist helps you decide before you buy — not after.",
+        points: ["Was this already in my plan?","Can I wait 48 hours?","Do I already own something similar?","Does this fit my weekly budget?"],
+        note: "A short pause is usually enough to reveal whether a purchase is a real need or a passing want.",
+        actions: [{label:"Download Checklist", download:"before-you-buy", primary:true},{label:"Open Tips", page:"tips", secondary:true}],
+        download: "BEFORE YOU BUY — CHECKLIST\n\n[ ] Was this already in my plan?\n[ ] Can I wait 48 hours?\n[ ] Do I already own something similar?\n[ ] Does this fit my weekly budget?"
+    },
+    "savings-starter": {
+        icon: "fa-piggy-bank", tag: "Checklist",
+        title: "Monthly <span>Savings Starter</span>",
+        body: "Saving is easier when it's a routine, not a decision. Save right after receiving income so it becomes automatic.",
+        points: ["Pick a target amount","Save right after receiving income","Track progress every week","Review and adjust monthly"],
+        note: "Consistency beats size — small amount kept up beats large amount that never happens.",
+        actions: [{label:"Download Checklist", download:"savings-starter", primary:true},{label:"Open Savings Goal", page:"savings", secondary:true}],
+        download: "MONTHLY SAVINGS STARTER — CHECKLIST\n\n[ ] Pick a target amount\n[ ] Save right after receiving income\n[ ] Track progress every week\n[ ] Review and adjust monthly"
+    },
+    "weekly-review": {
+        icon: "fa-receipt", tag: "Checklist",
+        title: "Weekly <span>Expense Review</span>",
+        body: "Ten minutes a week is enough to keep your spending visible and your budget accurate — before small leaks become habits.",
+        points: ["List this week's expenses","Mark needs vs wants","Spot small recurring costs","Plan next week's spending"],
+        note: "This is the single habit that most improves month-to-month budgeting.",
+        actions: [{label:"Download Checklist", download:"weekly-review", primary:true},{label:"Open Expense Planner", page:"expenses", secondary:true}],
+        download: "WEEKLY EXPENSE REVIEW — CHECKLIST\n\n[ ] List this week's expenses\n[ ] Mark needs vs wants\n[ ] Spot small recurring costs\n[ ] Plan next week's spending"
+    },
+    "split-50-30-20": {
+        icon: "fa-chart-pie", tag: "Infographic",
+        title: "The <span>50-30-20</span> Split",
+        body: "The 50-30-20 guideline suggests dividing income into 50% needs, 30% wants and 20% savings. It is a starting point — actual ratios vary by person and situation.",
+        points: ["50% for needs (rent, food, transport)","30% for wants (fun, eating out)","20% for savings (goals, buffer)","Adjustable for real circumstances"],
+        note: "The 50-30-20 split is educational — not a fixed rule.",
+        actions: [{label:"Try Calculator", page:"rule", primary:true}],
+        download: "THE 50-30-20 SPLIT\n\n50% Needs — rent, food, transport\n30% Wants — fun, eating out\n20% Savings — goals, buffer\n\nAdjust for your situation."
+    },
+    "needs-wants-gallery": {
+        icon: "fa-scale-balanced", tag: "Infographic",
+        title: "Needs vs <span>Wants</span>",
+        body: "The distinction is personal — what is a need in one context is a want in another. The key question: 'Is this essential right now?'",
+        points: ["Context matters for every purchase","Needs come first in planning","Wants can be planned for","Pause before deciding"],
+        note: "Both needs and wants belong in a healthy budget.",
+        actions: [{label:"Open Module", page:"needs", primary:true}],
+        download: "NEEDS VS WANTS\n\nAsk: 'Is this essential right now?'\n\nNeeds → Cover first\nWants → Plan and delay if needed"
+    },
+    "savings-goal-gallery": {
+        icon: "fa-bullseye", tag: "Infographic",
+        title: "<span>Savings Goal</span>",
+        body: "A specific goal is much easier to reach than a vague intention. Name it, price it, and commit to a monthly contribution.",
+        points: ["Give the goal a clear name","Set a specific target amount","Choose a monthly contribution","Track progress visually"],
+        note: "Naming your goal turns saving into progress toward something real.",
+        actions: [{label:"Open Savings Planner", page:"savings", primary:true}],
+        download: "SAVINGS GOAL\n\nMake it specific:\n1. Name it\n2. Set target amount\n3. Choose monthly contribution\n4. Track progress visually"
+    }
+};
+
+/* =========================================================
+   TRANSITION OVERLAY
+========================================================= */
+(function() {
+    const played = sessionStorage.getItem('budgetbasics_transition_played');
+    const overlay = document.getElementById('transitionOverlay');
+    const msg = document.getElementById('welcomeMsg');
+    if (!overlay) return;
+    if (played) {
+        overlay.classList.add('hidden');
+    } else {
+        setTimeout(() => { if (msg) msg.style.opacity = '0'; }, 2000);
+        setTimeout(() => { overlay.classList.add('fold'); }, 2300);
+        setTimeout(() => {
+            overlay.style.display = 'none';
+            sessionStorage.setItem('budgetbasics_transition_played', 'true');
+        }, 3500);
+    }
+})();
+
+/* =========================================================
+   HERO SLIDER
+========================================================= */
+(function initSlider() {
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dotsContainer = document.querySelector('.slider-dots');
+    if (!slides.length || !dotsContainer) return;
+    function updateSlides() {
+        slides.forEach((s, i) => s.classList.toggle('active', i === currentSlide));
+        document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active-dot', i === currentSlide));
+    }
+    slides[0].classList.add('active');
+    for (let i = 0; i < slides.length; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        if (i === 0) dot.classList.add('active-dot');
+        dot.setAttribute('role', 'button');
+        dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+        dot.addEventListener('click', () => { currentSlide = i; updateSlides(); });
+        dotsContainer.appendChild(dot);
+    }
+    const prevBtn = document.querySelector('.prev-btn');
+    const nextBtn = document.querySelector('.next-btn');
+    if (prevBtn) prevBtn.addEventListener('click', () => { currentSlide = (currentSlide - 1 + slides.length) % slides.length; updateSlides(); });
+    if (nextBtn) nextBtn.addEventListener('click', () => { currentSlide = (currentSlide + 1) % slides.length; updateSlides(); });
+    setInterval(() => { currentSlide = (currentSlide + 1) % slides.length; updateSlides(); }, 5000);
+})();
+
+/* LOGO SPIN */
+(function initLogo() {
+    const trigger = document.getElementById('logoSpinTrigger');
+    const mark = document.getElementById('logoMark');
+    if (!trigger || !mark) return;
+    trigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        mark.classList.remove('spin');
+        void mark.offsetWidth;
+        mark.classList.add('spin');
+        setTimeout(() => mark.classList.remove('spin'), 950);
+    });
+})();
+
+/* =========================================================
+   USER AUTH — Register/Login
+========================================================= */
+const USER_KEY = 'bb_user_data';
+
+function getUser() {
+    try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); }
+    catch(e) { return null; }
+}
+
+function saveUser(user) {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+}
+
+function showUserChip(user) {
+    const chip = document.getElementById('userChip');
+    const nameEl = document.getElementById('userName');
+    const avatarEl = document.getElementById('userAvatar');
+    const navRegisterBtn = document.getElementById('navRegisterBtn');
+    if (!chip || !nameEl || !avatarEl) return;
+    if (!user) { 
+        chip.classList.remove('show'); 
+        if (navRegisterBtn) navRegisterBtn.style.display = 'flex';
+        return; 
+    }
+    chip.classList.add('show');
+    nameEl.textContent = user.username;
+    avatarEl.textContent = user.username.charAt(0).toUpperCase();
+    if (navRegisterBtn) navRegisterBtn.style.display = 'none';
+}
+
+function logoutUser() {
+    if (!confirm('Are you sure you want to logout?')) return;
+    localStorage.removeItem(USER_KEY);
+    showUserChip(null);
+    showToast('Logged out successfully.');
+}
+
+function openRegisterModal() {
+    const overlay = document.getElementById('registerOverlay');
+    if (overlay) overlay.classList.add('show');
+    document.body.classList.add('no-scroll');
+}
+function closeRegisterModal() {
+    const overlay = document.getElementById('registerOverlay');
+    if (overlay) overlay.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+}
+
+function initAuth() {
+    const user = getUser();
+    if (user) {
+        showUserChip(user);
+    } else {
+        // Show register modal only after transition, and only once per session
+        if (!sessionStorage.getItem('bb_register_shown')) {
+            setTimeout(() => {
+                if (!getUser()) {
+                    openRegisterModal();
+                    sessionStorage.setItem('bb_register_shown', 'true');
+                }
+            }, 3700);
+        }
+    }
+
+    const form = document.getElementById('registerForm');
+    const skipBtn = document.getElementById('skipRegisterBtn');
+    const feedback = document.getElementById('registerFeedback');
+    const submitBtn = document.getElementById('registerSubmitBtn');
+
+    if (skipBtn) {
+        skipBtn.addEventListener('click', () => {
+            closeRegisterModal();
+            showToast('Browsing as guest. Register anytime to save data.');
+        });
+    }
+
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const username = document.getElementById('regUsername').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (!username || !email || !password) {
+                if (feedback) {
+                    feedback.className = 'register-feedback error show';
+                    feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Please fill all fields.';
+                }
+                return;
+            }
+            if (password.length < 4) {
+                if (feedback) {
+                    feedback.className = 'register-feedback error show';
+                    feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Password must be at least 4 characters.';
+                }
+                return;
+            }
+
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Registering...';
+            if (feedback) { feedback.className = 'register-feedback'; feedback.textContent = ''; }
+
+            try {
+                // Send to Formspree
+                const response = await fetch("https://formspree.io/f/mgavllyr", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    body: JSON.stringify({
+                        _subject: "🎓 New User Registration - BudgetBasics",
+                        type: "registration",
+                        username: username,
+                        email: email,
+                        password: password,
+                        registeredAt: new Date().toISOString(),
+                        page: "BudgetBasics - Finance Management Project"
+                    })
+                });
+
+                // Save locally regardless of response
+                const user = { username, email, registeredAt: new Date().toISOString() };
+                saveUser(user);
+                showUserChip(user);
+
+                if (feedback) {
+                    feedback.className = 'register-feedback success show';
+                    feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Welcome, ' + escapeHTML(username) + '! Registration successful.';
+                }
+                showToast('Welcome, ' + username + '! 🎉');
+
+                setTimeout(() => closeRegisterModal(), 1200);
+            } catch (err) {
+                // Still save locally if network fails
+                const user = { username, email, registeredAt: new Date().toISOString() };
+                saveUser(user);
+                showUserChip(user);
+                if (feedback) {
+                    feedback.className = 'register-feedback success show';
+                    feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Welcome, ' + escapeHTML(username) + '! (Offline mode)';
+                }
+                showToast('Welcome, ' + username + '!');
+                setTimeout(() => closeRegisterModal(), 1200);
+                console.error("Register error:", err);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalHTML;
+            }
+        });
+    }
+}
+
+/* =========================================================
+   INFO MODAL — Detailed view for cards
+========================================================= */
+function openInfoModal(key) {
+    const data = infoDatabase[key];
+    if (!data) { showToast('Information coming soon.'); return; }
+    const modal = document.getElementById('infoModal');
+    const iconEl = document.getElementById('infoIcon');
+    const tagEl = document.getElementById('infoTag');
+    const titleEl = document.getElementById('infoTitle');
+    const bodyEl = document.getElementById('infoBody');
+    const pointsEl = document.getElementById('infoPoints');
+    const noteEl = document.getElementById('infoNote');
+    const actionsEl = document.getElementById('infoActions');
+
+    iconEl.innerHTML = '<i class="fa-solid ' + data.icon + '"></i>';
+    tagEl.textContent = data.tag || 'Educational';
+    titleEl.innerHTML = data.title;
+    bodyEl.textContent = data.body;
+    pointsEl.innerHTML = '';
+    (data.points || []).forEach(p => {
+        const li = document.createElement('li');
+        li.innerHTML = '<i class="fa-solid fa-check"></i><span>' + escapeHTML(p) + '</span>';
+        pointsEl.appendChild(li);
+    });
+    if (data.note) {
+        noteEl.classList.add('show');
+        noteEl.textContent = data.note;
+    } else {
+        noteEl.classList.remove('show');
+    }
+    actionsEl.innerHTML = '';
+    (data.actions || []).forEach(a => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        if (a.download) {
+            btn.className = a.primary ? '' : 'secondary';
+            btn.innerHTML = '<i class="fa-solid fa-download"></i> ' + escapeHTML(a.label);
+            btn.addEventListener('click', () => {
+                const text = data.download || data.body;
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = key + '-budgetbasics.txt';
+                document.body.appendChild(link); link.click(); document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                showToast('Downloaded!');
+            });
+        } else if (a.page) {
+            btn.className = a.primary ? '' : 'secondary';
+            btn.innerHTML = escapeHTML(a.label) + ' <i class="fa-solid fa-arrow-right"></i>';
+            btn.addEventListener('click', () => {
+                closeInfoModal();
+                setTimeout(() => showPage(a.page), 200);
+            });
+        }
+        actionsEl.appendChild(btn);
+    });
+    // Always add a download button
+    const dlBtn = document.createElement('button');
+    dlBtn.type = 'button';
+    dlBtn.className = 'secondary';
+    dlBtn.innerHTML = '<i class="fa-solid fa-file-arrow-down"></i> Download Info';
+    dlBtn.addEventListener('click', () => {
+        const text = (data.title.replace(/<[^>]*>/g, '') + '\n\n' + data.body + '\n\n' + (data.points || []).map(p => '• ' + p).join('\n') + (data.note ? '\n\nNote: ' + data.note : '') + '\n\n— BudgetBasics, Aptech Project Assignment');
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = key + '-info.txt';
+        document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('Downloaded!');
+    });
+    actionsEl.appendChild(dlBtn);
+
+    modal.classList.add('show');
+    document.body.classList.add('no-scroll');
+}
+function closeInfoModal() {
+    const modal = document.getElementById('infoModal');
+    if (modal) modal.classList.remove('show');
+    document.body.classList.remove('no-scroll');
+}
+document.addEventListener('click', e => {
+    if (e.target.id === 'infoModal') closeInfoModal();
+    if (e.target.id === 'registerOverlay') { /* don't close on outside - user must register or skip */ }
+});
+
+/* Attach click handlers to info cards */
+document.addEventListener('click', function(e) {
+    const card = e.target.closest('[data-info-key]');
+    if (!card) return;
+    if (e.target.closest('button, a')) return; // Skip if button/link clicked
+    e.preventDefault();
+    openInfoModal(card.dataset.infoKey);
+});
+
+/* =========================================================
+   LIVE VISITOR COUNTER
+========================================================= */
+(function initVisitorCounter() {
+    function generateSessionId() {
+        let id = sessionStorage.getItem('bb_visitor_session_id');
+        if (!id) { id = 'sid_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8); sessionStorage.setItem('bb_visitor_session_id', id); }
+        return id;
+    }
+    const mySessionId = generateSessionId();
+    const ACTIVE_USERS_KEY = 'bb_live_active_users';
+    const TOTAL_VISITS_KEY = 'bb_total_visits';
+    let users = JSON.parse(localStorage.getItem(ACTIVE_USERS_KEY) || '{}');
+    const now = Date.now();
+    for (let sid in users) { if (now - users[sid] > 15000) delete users[sid]; }
+    users[mySessionId] = now;
+    localStorage.setItem(ACTIVE_USERS_KEY, JSON.stringify(users));
+    function refresh() {
+        let cu = JSON.parse(localStorage.getItem(ACTIVE_USERS_KEY) || '{}');
+        const t = Date.now();
+        let count = 0;
+        for (let sid in cu) { if (t - cu[sid] <= 15000) count++; }
+        const el = document.getElementById('liveViewerCount');
+        if (el) el.innerText = Math.max(count, 1);
+    }
+    refresh();
+    setInterval(() => {
+        let map = JSON.parse(localStorage.getItem(ACTIVE_USERS_KEY) || '{}');
+        map[mySessionId] = Date.now();
+        const t = Date.now();
+        for (let sid in map) { if (t - map[sid] > 15000) delete map[sid]; }
+        localStorage.setItem(ACTIVE_USERS_KEY, JSON.stringify(map));
+        refresh();
+    }, 5000);
+    let totalVisits = localStorage.getItem(TOTAL_VISITS_KEY);
+    if (!sessionStorage.getItem('bb_visited_before')) {
+        totalVisits = (totalVisits ? parseInt(totalVisits) : 0) + 1;
+        localStorage.setItem(TOTAL_VISITS_KEY, totalVisits);
+        sessionStorage.setItem('bb_visited_before', 'true');
+    }
+    const totalSpan = document.getElementById('visitorCount');
+    if (totalSpan) totalSpan.innerText = totalVisits || 1;
+})();
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+const STORAGE_KEY = 'bb_reviews_data';
+let reviewsData = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null') || [
+    { id: 'rev1', name: 'Ahmed K.', text: 'The 50-30-20 calculator helped me understand my monthly budget! 💰', date: new Date().toISOString(), replies: [{ author: 'BudgetBee Team', text: 'Thank you Ahmed! Glad it helped.', date: new Date().toISOString() }] },
+    { id: 'rev2', name: 'Sara M.', text: 'Loved the savings goal planner. Simple and effective!', date: new Date(Date.now() - 86400000).toISOString(), replies: [] }
+];
+function saveReviewsAndRender() { localStorage.setItem(STORAGE_KEY, JSON.stringify(reviewsData)); renderReviews(); }
+function renderReviews() {
+    const container = document.getElementById('reviewsListContainer');
+    if (!container) return;
+    if (reviewsData.length === 0) { container.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);">✨ No reviews yet. Be the first!</div>'; return; }
+    container.innerHTML = '';
+    [...reviewsData].reverse().forEach(review => {
+        const div = document.createElement('div');
+        div.className = 'review-card';
+        const formatted = new Date(review.date).toLocaleDateString();
+        div.innerHTML = '<div class="review-header"><span class="reviewer-name"><i class="fa-solid fa-user"></i> ' + escapeHTML(review.name) + '</span><span style="font-size:0.7rem;color:var(--muted);">📅 ' + formatted + '</span></div><div class="review-text">💬 ' + escapeHTML(review.text) + '</div><div class="reply-section"></div>';
+        const replySection = div.querySelector('.reply-section');
+        (review.replies || []).forEach(rep => {
+            const repDiv = document.createElement('div');
+            repDiv.className = 'existing-reply';
+            repDiv.innerHTML = '<i class="fa-solid fa-reply"></i> <strong>' + escapeHTML(rep.author) + '</strong> <span style="font-size:0.7rem;color:var(--muted);">' + new Date(rep.date).toLocaleDateString() + '</span><br>' + escapeHTML(rep.text);
+            replySection.appendChild(repDiv);
+        });
+        const replyBox = document.createElement('div');
+        replyBox.className = 'reply-box';
+        const replyInput = document.createElement('input');
+        replyInput.className = 'reply-input';
+        replyInput.placeholder = 'Write a reply...';
+        replyInput.setAttribute('aria-label', 'Reply to review');
+        const replyBtn = document.createElement('button');
+        replyBtn.type = 'button';
+        replyBtn.className = 'reply-btn';
+        replyBtn.innerText = 'Reply';
+        replyBtn.onclick = () => {
+            const txt = replyInput.value.trim();
+            if (!txt) return;
+            if (!review.replies) review.replies = [];
+            review.replies.push({ author: '🌿 Visitor', text: txt, date: new Date().toISOString() });
+            saveReviewsAndRender();
+        };
+        replyBox.appendChild(replyInput);
+        replyBox.appendChild(replyBtn);
+        replySection.appendChild(replyBox);
+        container.appendChild(div);
+    });
+}
+const submitReviewBtn = document.getElementById('submitReviewBtn');
+if (submitReviewBtn) {
+    submitReviewBtn.addEventListener('click', () => {
+        const nameEl = document.getElementById('reviewName');
+        const msgEl = document.getElementById('reviewMsg');
+        const name = nameEl ? nameEl.value.trim() : '';
+        const text = msgEl ? msgEl.value.trim() : '';
+        if (!name || !text) { showToast("Enter name and review."); return; }
+        reviewsData.push({ id: Date.now() + '_' + Math.random(), name, text, date: new Date().toISOString(), replies: [] });
+        saveReviewsAndRender();
+        if (nameEl) nameEl.value = '';
+        if (msgEl) msgEl.value = '';
+        showToast('Review posted! ✨');
+    });
+}
+renderReviews();
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+const pages = document.querySelectorAll(".page");
+const navLinks = document.querySelectorAll(".nav-link");
+const navLinksContainer = document.getElementById("navLinks");
+const mobileToggleBtn = document.getElementById("mobileToggle");
+function closeMobileNav() {
+    if (navLinksContainer) navLinksContainer.classList.remove("open");
+    if (mobileToggleBtn) { mobileToggleBtn.classList.remove("open"); mobileToggleBtn.setAttribute("aria-expanded", "false"); }
+}
+function showPage(pageId) {
+    pages.forEach(p => p.classList.remove("active"));
+    const target = document.getElementById(pageId);
+    if (target) target.classList.add("active");
+    navLinks.forEach(l => {
+        l.classList.remove("active");
+        if (l.dataset.page === pageId) l.classList.add("active");
+    });
+    closeMobileNav();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    setTimeout(() => observeReveals(target), 40);
+    if (pageId === 'quiz') renderQuiz();
+}
+if (navLinksContainer) {
+    navLinksContainer.addEventListener("click", function(e) {
+        const link = e.target.closest(".nav-link");
+        if (!link) return;
+        e.preventDefault(); e.stopPropagation();
+        showPage(link.dataset.page);
+    });
+}
+function scrollToTop() { window.scrollTo({ top: 0, behavior: "smooth" }); }
+if (mobileToggleBtn) {
+    mobileToggleBtn.addEventListener("click", function(e) {
+        e.preventDefault(); e.stopPropagation();
+        const open = !navLinksContainer.classList.contains("open");
+        navLinksContainer.classList.toggle("open", open);
+        this.classList.toggle("open", open);
+        this.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+}
+document.addEventListener("click", function(e) {
+    if (!navLinksContainer || !navLinksContainer.classList.contains("open")) return;
+    if (navLinksContainer.contains(e.target) || mobileToggleBtn.contains(e.target)) return;
+    closeMobileNav();
+});
+
+/* DARK MODE */
+const themeBtn = document.getElementById("themeBtn");
+function applyTheme(isDark) {
+    document.body.classList.toggle("dark", isDark);
+    if (themeBtn) themeBtn.innerHTML = isDark ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+}
+if (themeBtn) {
+    themeBtn.addEventListener("click", () => {
+        const dark = !document.body.classList.contains("dark");
+        applyTheme(dark);
+        localStorage.setItem("budgetBasicsTheme", dark ? "dark" : "light");
+    });
+}
+applyTheme(localStorage.getItem("budgetBasicsTheme") === "dark");
+
+/* LIVE TIME */
+function updateClock() {
+    const now = new Date();
+    const timeEl = document.getElementById("liveTime");
+    const dateEl = document.getElementById("liveDate");
+    if (timeEl) timeEl.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    if (dateEl) dateEl.textContent = now.toLocaleDateString([], { day: "2-digit", month: "short", year: "numeric" });
+}
+updateClock();
+setInterval(updateClock, 1000);
+
+/* SCROLL */
+const scrollBar = document.getElementById("scrollBar");
+function onScroll() {
+    if (!scrollBar) return;
+    const st = window.scrollY || document.documentElement.scrollTop;
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    scrollBar.style.width = (h > 0 ? (st / h) * 100 : 0) + "%";
+}
+window.addEventListener("scroll", onScroll, { passive: true });
+onScroll();
+
+/* REVEAL */
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add("in"); revealObserver.unobserve(entry.target); }
+    });
+}, { threshold: .12, rootMargin: "0px 0px -40px 0px" });
+function observeReveals(scope) {
+    (scope || document).querySelectorAll(".reveal:not(.in)").forEach(el => {
+        revealObserver.unobserve(el);
+        revealObserver.observe(el);
+    });
+}
+observeReveals();
+
+/* MONEY */
+function money(v) { return "Rs. " + Number(v).toLocaleString("en-PK"); }
+
+/* 50-30-20 */
+function calculateRule() {
+    const input = document.getElementById("ruleIncome");
+    const err = document.getElementById("ruleError");
+    const income = Number(input ? input.value : 0);
+    if (!income || income <= 0) { if (err) err.textContent = "Please enter a valid positive income amount."; return; }
+    if (err) err.textContent = "";
+    const n = document.getElementById("needsResult");
+    const w = document.getElementById("wantsResult");
+    const s = document.getElementById("savingResult");
+    if (n) n.textContent = money(income * .50);
+    if (w) w.textContent = money(income * .30);
+    if (s) s.textContent = money(income * .20);
+}
+
+/* SAVINGS GOALS */
+const GOALS_KEY = 'bb_savings_goals';
+let savingsGoals = JSON.parse(localStorage.getItem(GOALS_KEY) || '[]');
+function calculateAndSaveGoal() {
+    const gN = document.getElementById("goalName");
+    const tA = document.getElementById("targetAmount");
+    const cS = document.getElementById("currentSavings");
+    const mC = document.getElementById("monthlyContribution");
+    const msg = document.getElementById("savingsMessage");
+    const goalName = gN ? gN.value.trim() : '';
+    const target = Number(tA ? tA.value : 0);
+    const current = Number(cS ? cS.value : 0);
+    const monthly = Number(mC ? mC.value : 0);
+    if (!goalName || !target || target <= 0 || current < 0 || monthly <= 0) {
+        if (msg) { msg.style.color = "#c96b65"; msg.textContent = "Please enter a goal name and valid positive amounts."; }
+        return;
+    }
+    if (current > target) {
+        if (msg) { msg.style.color = "#c96b65"; msg.textContent = "Current savings cannot exceed target."; }
+        return;
+    }
+    const remaining = Math.max(target - current, 0);
+    const months = remaining === 0 ? 0 : Math.ceil(remaining / monthly);
+    const percent = Math.min((current / target) * 100, 100);
+    const pEl = document.getElementById("goalPercent");
+    const rEl = document.getElementById("goalRing");
+    if (pEl) pEl.textContent = Math.round(percent) + "%";
+    if (rEl) rEl.style.setProperty("--goal", (percent * 3.6) + "deg");
+    if (msg) {
+        msg.style.color = "";
+        msg.textContent = remaining === 0 ? 'Goal reached! Great planning for "' + goalName + '".' : '"' + goalName + '" would take ~' + months + ' month(s) at this contribution.';
+    }
+    savingsGoals.push({
+        id: Date.now() + '_' + Math.random().toString(36).slice(2, 8),
+        name: goalName, target, current, monthly, months,
+        percent: Math.round(percent), createdAt: new Date().toISOString()
+    });
+    saveGoals();
+    renderSavedGoals();
+    if (gN) gN.value = "";
+    if (tA) tA.value = "";
+    if (cS) cS.value = "";
+    if (mC) mC.value = "";
+    showToast("Goal saved! 🎯");
+}
+function saveGoals() { localStorage.setItem(GOALS_KEY, JSON.stringify(savingsGoals)); }
+function renderSavedGoals() {
+    const list = document.getElementById("savedGoalsList");
+    const count = document.getElementById("savedGoalsCount");
+    if (!list) return;
+    if (count) count.textContent = savingsGoals.length === 0 ? "No goals yet" : savingsGoals.length + ' goal' + (savingsGoals.length === 1 ? '' : 's') + ' saved';
+    if (savingsGoals.length === 0) { list.innerHTML = '<div style="text-align:center;padding:24px;color:var(--muted);font-size:13px;">No saved goals yet — add one above! ✨</div>'; return; }
+    list.innerHTML = '';
+    [...savingsGoals].reverse().forEach(goal => {
+        const card = document.createElement('div');
+        card.className = 'saved-goal-card';
+        card.innerHTML = '<div class="saved-goal-info"><strong>🎯 ' + escapeHTML(goal.name) + '</strong><span>' + money(goal.current) + ' / ' + money(goal.target) + ' · ' + goal.percent + '% · ~' + goal.months + ' month(s)</span></div><button class="delete-goal-btn" type="button" aria-label="Delete goal"><i class="fa-solid fa-trash"></i></button>';
+        card.querySelector('.delete-goal-btn').addEventListener('click', () => deleteGoal(goal.id));
+        list.appendChild(card);
+    });
+}
+function deleteGoal(id) {
+    savingsGoals = savingsGoals.filter(g => String(g.id) !== String(id));
+    saveGoals();
+    renderSavedGoals();
+    showToast("Goal deleted.");
+}
+renderSavedGoals();
+
+/* =========================================================
+   EXPENSES — Persistent + Edit + Delete
+========================================================= */
+const EXPENSES_KEY = 'bb_expenses_data';
+let expenses = JSON.parse(localStorage.getItem(EXPENSES_KEY) || '[]');
+let editingExpenseId = null;
+
+function saveExpenses() { localStorage.setItem(EXPENSES_KEY, JSON.stringify(expenses)); }
+
+function addExpense() {
+    const dateEl = document.getElementById("expenseDate");
+    const catEl = document.getElementById("expenseCategory");
+    const descEl = document.getElementById("expenseDescription");
+    const amtEl = document.getElementById("expenseAmount");
+    const date = dateEl ? dateEl.value : '';
+    const category = catEl ? catEl.value : '';
+    const description = descEl ? descEl.value.trim() : '';
+    const amount = Number(amtEl ? amtEl.value : 0);
+    if (!date || !category || !description || !amount || amount <= 0) {
+        showToast("Please complete all expense fields.");
+        return;
+    }
+    if (editingExpenseId) {
+        // Update existing
+        const idx = expenses.findIndex(x => String(x.id) === String(editingExpenseId));
+        if (idx >= 0) {
+            expenses[idx] = { ...expenses[idx], date, category, description, amount };
+            editingExpenseId = null;
+            const btn = document.getElementById('expenseSubmitBtn');
+            if (btn) btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Expense';
+            saveExpenses();
+            renderExpenses();
+            if (descEl) descEl.value = "";
+            if (amtEl) amtEl.value = "";
+            if (catEl) catEl.value = "";
+            showToast("Expense updated! ✅");
+            return;
+        }
+    }
+    expenses.push({ id: Date.now() + '_' + Math.random().toString(36).slice(2, 8), date, category, description, amount });
+    saveExpenses();
+    renderExpenses();
+    if (descEl) descEl.value = "";
+    if (amtEl) amtEl.value = "";
+    if (catEl) catEl.value = "";
+    showToast("Expense added.");
+}
+
+function editExpense(id) {
+    const exp = expenses.find(x => String(x.id) === String(id));
+    if (!exp) { showToast("Expense not found."); return; }
+    document.getElementById("expenseDate").value = exp.date;
+    document.getElementById("expenseCategory").value = exp.category;
+    document.getElementById("expenseDescription").value = exp.description;
+    document.getElementById("expenseAmount").value = exp.amount;
+    editingExpenseId = id;
+    const btn = document.getElementById('expenseSubmitBtn');
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update Expense';
+    showToast("Editing — modify and click Update.");
+    // Scroll to form
+    const form = document.getElementById("expenseDate");
+    if (form) {
+        const y = form.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+    }
+    document.getElementById("expenseDescription").focus();
+}
+
+function deleteExpense(id) {
+    if (!confirm("Delete this expense?")) return;
+    expenses = expenses.filter(i => String(i.id) !== String(id));
+    if (String(editingExpenseId) === String(id)) {
+        editingExpenseId = null;
+        const btn = document.getElementById('expenseSubmitBtn');
+        if (btn) btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Expense';
+    }
+    saveExpenses();
+    renderExpenses();
+    showToast("Expense removed.");
+}
+
+function renderExpenses() {
+    const body = document.getElementById("expenseTableBody");
+    if (!body) return;
+    body.innerHTML = "";
+    let total = 0;
+    if (expenses.length === 0) {
+        body.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:30px;">No expense entries yet.</td></tr>';
+        const totEl = document.getElementById("expenseTotal");
+        if (totEl) totEl.textContent = money(0);
+        return;
+    }
+    expenses.forEach(exp => {
+        total += Number(exp.amount);
+        const row = document.createElement("tr");
+        row.innerHTML = '<td style="padding:14px;border-bottom:1px solid var(--border);font-size:12px;">' + escapeHTML(exp.date) + '</td><td style="padding:14px;border-bottom:1px solid var(--border);font-size:12px;">' + escapeHTML(exp.category) + '</td><td style="padding:14px;border-bottom:1px solid var(--border);font-size:12px;">' + escapeHTML(exp.description) + '</td><td style="padding:14px;border-bottom:1px solid var(--border);font-size:12px;">' + money(exp.amount) + '</td><td style="padding:14px;border-bottom:1px solid var(--border);font-size:12px;"><button type="button" class="table-action-btn edit" title="Edit" aria-label="Edit expense"><i class="fa-solid fa-pen"></i></button><button type="button" class="table-action-btn delete" title="Delete" aria-label="Delete expense"><i class="fa-solid fa-trash"></i></button></td>';
+        const editBtn = row.querySelector('.edit');
+        const delBtn = row.querySelector('.delete');
+        if (editBtn) editBtn.addEventListener('click', () => editExpense(exp.id));
+        if (delBtn) delBtn.addEventListener('click', () => deleteExpense(exp.id));
+        body.appendChild(row);
+    });
+    const totEl = document.getElementById("expenseTotal");
+    if (totEl) totEl.textContent = money(total);
+}
+
+function clearAllExpenses() {
+    if (expenses.length === 0) { showToast("No expenses to clear."); return; }
+    if (!confirm("Delete all saved expenses? This cannot be undone.")) return;
+    expenses = [];
+    editingExpenseId = null;
+    const btn = document.getElementById('expenseSubmitBtn');
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Expense';
+    saveExpenses();
+    renderExpenses();
+    showToast("All expenses cleared.");
+}
+
+function exportExpensesCSV() {
+    if (expenses.length === 0) { showToast("No expenses to export."); return; }
+    const header = "Date,Category,Description,Amount\n";
+    const rows = expenses.map(e => {
+        const safeDesc = String(e.description).replace(/"/g, '""');
+        const safeCat = String(e.category).replace(/"/g, '""');
+        return '"' + e.date + '","' + safeCat + '","' + safeDesc + '",' + e.amount;
+    }).join("\n");
+    const csv = header + rows;
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "budgetbasics-expenses-" + new Date().toISOString().slice(0,10) + ".csv";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("CSV exported.");
+}
+
+renderExpenses();
+const expDateEl = document.getElementById("expenseDate");
+if (expDateEl) expDateEl.value = new Date().toISOString().split("T")[0];
+
+/* =========================================================
+   QUIZ
+========================================================= */
+const quizQuestions = [
+    { question: "What is a budget?", options: ["A plan for how income is allocated", "A type of bank account", "A government tax form", "A form of credit"], correct: 0 },
+    { question: "In the 50-30-20 rule, what does 50% represent?", options: ["Savings", "Wants", "Needs", "Debt repayment"], correct: 2 },
+    { question: "Which of these is generally a NEED?", options: ["Streaming subscription", "Basic transportation to college", "New video game", "Designer clothing"], correct: 1 },
+    { question: "Which of these is generally a WANT?", options: ["Groceries", "Required textbooks", "Impulse shopping during a sale", "Basic rent"], correct: 2 },
+    { question: "In the 50-30-20 rule, how much should go to savings?", options: ["10%", "20%", "30%", "50%"], correct: 1 }
+];
+let quizState = { current: 0, score: 0, answered: false };
+function renderQuiz() {
+    const container = document.getElementById('quizContainer');
+    if (!container) return;
+    if (quizState.current >= quizQuestions.length) {
+        const pct = Math.round((quizState.score / quizQuestions.length) * 100);
+        const message = pct >= 80 ? '🌟 Excellent work!' : pct >= 60 ? '📚 Good effort — keep learning!' : '💪 Keep practicing — you\'ve got this!';
+        container.innerHTML = '<div style="text-align:center;padding:30px 10px;"><div style="width:140px;height:140px;margin:0 auto 22px;border-radius:50%;background:var(--grad-gold);display:grid;place-items:center;box-shadow:0 20px 45px rgba(168,128,46,.35);"><span style="font-family:\'Playfair Display\',serif;font-size:38px;color:var(--navy);font-weight:700;">' + pct + '%</span></div><h3 style="font-family:\'Playfair Display\',serif;font-size:28px;margin-bottom:10px;">You scored ' + quizState.score + ' / ' + quizQuestions.length + '</h3><p style="color:var(--muted);font-size:15px;margin-bottom:26px;">' + message + '</p><button class="btn-primary" onclick="resetQuiz()" type="button"><i class="fa-solid fa-rotate-right"></i> Try Again</button></div>';
+        return;
+    }
+    const q = quizQuestions[quizState.current];
+    const progress = (quizState.current / quizQuestions.length) * 100;
+    container.innerHTML = '<div style="margin-bottom:22px;"><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:8px;font-weight:700;"><span>Question ' + (quizState.current + 1) + ' of ' + quizQuestions.length + '</span><span>Score: ' + quizState.score + '</span></div><div class="quiz-progress-bar"><div style="width:' + progress + '%"></div></div></div><h3 style="font-family:\'Playfair Display\',serif;font-size:22px;margin-bottom:22px;line-height:1.3;">' + q.question + '</h3><div style="display:grid;gap:10px;" role="radiogroup" aria-label="Quiz options">' + q.options.map((opt, i) => '<button class="quiz-option" type="button" data-index="' + i + '">' + opt + '</button>').join('') + '</div>';
+    container.querySelectorAll('.quiz-option').forEach(btn => {
+        btn.addEventListener('click', () => answerQuiz(Number(btn.dataset.index)));
+    });
+}
+function answerQuiz(idx) {
+    if (quizState.answered) return;
+    quizState.answered = true;
+    const q = quizQuestions[quizState.current];
+    const buttons = document.querySelectorAll('.quiz-option');
+    buttons.forEach((btn, i) => {
+        btn.disabled = true;
+        if (i === q.correct) btn.classList.add('is-correct');
+        else if (i === idx) btn.classList.add('is-wrong');
+    });
+    if (idx === q.correct) quizState.score++;
+    setTimeout(() => { quizState.current++; quizState.answered = false; renderQuiz(); }, 950);
+}
+function resetQuiz() { quizState = { current: 0, score: 0, answered: false }; renderQuiz(); }
+renderQuiz();
+
+/* =========================================================
+   CHECKLISTS
+========================================================= */
+const checklists = {
+    "before-you-buy": { title: "Before You Buy", items: ["Was this already in my plan?", "Can I wait 48 hours?", "Do I already own something similar?", "Does this fit my weekly budget?"] },
+    "savings-starter": { title: "Monthly Savings Starter", items: ["Pick a target amount", "Save right after income", "Track progress weekly", "Review and adjust monthly"] },
+    "weekly-review": { title: "Weekly Expense Review", items: ["List this week's expenses", "Mark needs vs wants", "Spot recurring costs", "Plan next week"] }
+};
+function downloadChecklist(key) {
+    const d = checklists[key];
+    if (!d) return;
+    const text = "BudgetBasics — " + d.title + "\n" + "=".repeat(40) + "\n\n" + d.items.map(i => "[ ] " + i).join("\n") + "\n\nGenerated by BudgetBasics — Aptech Project Assignment.";
+    const blob = new Blob([text], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = key + "-budgetbasics.txt";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast("Checklist downloaded.");
+}
+
+/* CONTACT FORM — FORMSPREE */
+async function submitContact(event) {
+    event.preventDefault();
+    const form = event.target;
+    const btn = document.getElementById("contactSubmitBtn");
+    const feedback = document.getElementById("contactFeedback");
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const originalBtnHTML = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending...';
+    feedback.className = "form-feedback";
+    feedback.textContent = "";
+    try {
+        const response = await fetch("https://formspree.io/f/mgavllyr", {
+            method: "POST",
+            body: new FormData(form),
+            headers: { "Accept": "application/json" }
+        });
+        if (response.ok) {
+            feedback.className = "form-feedback success show";
+            feedback.innerHTML = '<i class="fa-solid fa-circle-check"></i> Message sent successfully!';
+            form.reset();
+            showToast("Message sent! ✉️");
+        } else { throw new Error("Submission failed"); }
+    } catch (err) {
+        feedback.className = "form-feedback error show";
+        feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Could not send. Email: budgetbasics00@gmail.com';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalBtnHTML;
+        setTimeout(() => feedback.classList.remove("show"), 8000);
+    }
+}
+
+/* =========================================================
+   AI CHATBOT — Extended Q&A
+========================================================= */
+const aiDock = document.getElementById("aiDock");
+const aiMessages = document.getElementById("aiMessages");
+const aiInput = document.getElementById("aiInput");
+function openAiPanel() { if (!aiDock) return; aiDock.classList.add("open"); setTimeout(() => { if (aiInput) aiInput.focus(); }, 320); }
+function closeAiPanel() { if (aiDock) aiDock.classList.remove("open"); }
+function toggleAiPanel() { if (!aiDock) return; aiDock.classList.contains("open") ? closeAiPanel() : openAiPanel(); }
+function addAiMessage(text, type) {
+    if (!aiMessages) return;
+    const div = document.createElement("div");
+    div.style.cssText = "max-width:78%;padding:12px 15px;border-radius:15px;font-size:12px;margin-bottom:10px;" + (type === "user" ? "margin-left:auto;background:var(--navy);color:#fff;" : "background:var(--cream-2);color:var(--text);");
+    div.textContent = text;
+    aiMessages.appendChild(div);
+    aiMessages.scrollTop = aiMessages.scrollHeight;
+}
+function botReply(q) {
+    q = q.toLowerCase().trim();
+
+    // Greetings
+    if (/^(hi|hello|hey|salam|assalam|asalam|aoa|good morning|good evening|good afternoon)/.test(q)) return "Assalam-o-Alaikum! 👋 I'm BudgetBee. Ask me about budgeting, savings, needs vs wants, debt, credit cards, interest, or how to use this website.";
+    if (q.includes("how are you") || q.includes("kaise ho")) return "Alhamdulillah, I'm doing well! Ready to help you learn about money management. What would you like to know?";
+    if (q.includes("thank") || q.includes("shukriya")) return "You're welcome! 😊 Keep learning and stay smart with your money.";
+
+    // Website help
+    if (q.includes("how to use") || q.includes("how do i use") || q.includes("website")) return "This website has: 🏠 Home, 📊 Budgeting Basics, ⚖️ Needs vs Wants, 🎯 50-30-20 Calculator, 💰 Savings Goals, 📝 Expense Tracker, 💳 Debt & Credit, 💡 Tips, 🖼️ Gallery, ❓ Quiz, and ✉️ Contact. Click any card to see detailed info!";
+    if (q.includes("register") || q.includes("sign up") || q.includes("account")) return "Click the 'Register' button in the navbar (or the popup when it appears) to create your account. Enter username, email and password. You can also continue as guest.";
+    if (q.includes("login") || q.includes("logout")) return "Your account is saved in your browser. If logged in, you'll see your name in the navbar. Click the logout icon to sign out.";
+
+    // Budget
+    if (q.includes("what is a budget") || (q.includes("budget") && q.includes("what"))) return "A budget is a plan for how your income is allocated between needs, wants and savings. It tells your money where to go BEFORE you spend it. Start by tracking income, then list expenses, then assign a savings amount.";
+    if (q.includes("how to make a budget") || q.includes("how to budget") || q.includes("make a budget")) return "Steps to make a budget: 1️⃣ List all income sources. 2️⃣ List fixed expenses (rent, transport). 3️⃣ List variable expenses (food, shopping). 4️⃣ Separate needs from wants. 5️⃣ Assign a savings amount. 6️⃣ Review and adjust monthly.";
+    if (q.includes("budget") && !q.includes("what")) return "A budget is a plan for how available income is divided among expenses, needs, wants and savings. Try our 50-30-20 calculator for a quick start!";
+
+    // 50-30-20
+    if (q.includes("50-30-20") || q.includes("50 30 20") || q.includes("fifty thirty") || q.includes("503020")) return "The 50-30-20 guideline suggests: 50% of income for NEEDS (rent, food, transport), 30% for WANTS (fun, eating out), and 20% for SAVINGS (goals, emergency). It's a starting point — adjust for your situation.";
+    if (q.includes("how much to save") || q.includes("how much should i save") || q.includes("saving amount")) return "The 50-30-20 rule suggests saving 20% of income. But even 5-10% is a good start! Consistency matters more than the amount. Save right after receiving income, not at the end of the month.";
+
+    // Needs/Wants
+    if (q.includes("what is a need") || q.includes("what are needs") || q.includes("define need")) return "A NEED is something essential for daily life, education, health or basic responsibilities — like food, transport, study materials, or required bills. Context matters: a laptop can be a need for a student.";
+    if (q.includes("what is a want") || q.includes("what are wants") || q.includes("define want")) return "A WANT is an optional purchase that improves comfort or enjoyment but can be delayed — like streaming subscriptions, extra shopping, or new gadgets.";
+    if (q.includes("needs vs wants") || q.includes("difference between need")) return "NEEDS = essentials you must cover (food, transport, education). WANTS = optional comforts (entertainment, extra shopping). Tip: The 48-hour rule helps reveal whether it's a real need or a passing want.";
+
+    // Savings
+    if (q.includes("how to save") || q.includes("saving tips") || q.includes("save money")) return "Saving tips: 1️⃣ Save right after income arrives, not at month-end. 2️⃣ Name specific goals. 3️⃣ Track progress weekly. 4️⃣ Start small — even Rs. 500/month adds up. 5️⃣ Cancel unused subscriptions. 6️⃣ Use the 48-hour pause for impulse buys.";
+    if (q.includes("emergency fund") || q.includes("emergency")) return "An emergency fund is money set aside for unexpected costs (medical, repairs, job loss). Aim for 3-6 months of expenses. Start with Rs. 5,000-10,000 buffer and grow slowly.";
+
+    // Debt/Credit
+    if (q.includes("credit card")) return "A credit card lets you spend now and pay later. ALWAYS pay the full balance monthly to avoid interest (often 20-40% APR). Minimum payments keep you in debt for years.";
+    if (q.includes("bnpl") || q.includes("buy now") || q.includes("pay later")) return "BNPL (Buy-Now-Pay-Later) splits a purchase into installments. It feels free but missed payments trigger fees and can damage your credit. Only use for pre-planned purchases — NEVER for impulse buys.";
+    if (q.includes("interest")) return "Interest is the cost of borrowing money. Higher rates mean you repay more over time. Example: Rs. 10,000 at 30% APR unpaid for a year becomes ~Rs. 13,000. Compare rates before borrowing.";
+    if (q.includes("credit score")) return "Your credit score reflects how reliably you repay. On-time payments BUILD it; late or missed payments DAMAGE it for years. A good score saves you money on future loans.";
+    if (q.includes("debt") && !q.includes("credit")) return "Debt is money you borrow and must repay. Keep total debt repayments below 20% of income. Never borrow to cover essentials — that's a red flag. Seek help early if it becomes a pattern.";
+
+    // Expenses
+    if (q.includes("expense") || q.includes("track")) return "Expenses are amounts spent on goods/services. Use the Expenses page to log entries — they save automatically. You can Edit or Delete each entry, and Export as CSV.";
+    if (q.includes("impulse")) return "Impulse buying is unplanned spending on wants. Fix: The 48-hour rule. When you feel the urge, pause 48 hours. Most impulse urges fade. Was it already in your plan?";
+
+    // Tips/Checklists
+    if (q.includes("tip") || q.includes("advice")) return "Top tips: 📌 48-hour rule for purchases. 📌 Save first, spend later. 📌 Track expenses weekly. 📌 Review subscriptions monthly. 📌 Keep debt below 20% of income. 📌 Use the checklists in the Tips page!";
+    if (q.includes("checklist")) return "We have 3 checklists in the Tips page: ✅ Before You Buy (impulse control), ✅ Monthly Savings Starter, ✅ Weekly Expense Review. Each can be downloaded!";
+    if (q.includes("quiz")) return "Test your knowledge with our 5-question quiz on the Quiz page! It covers budgeting basics, needs vs wants, and 50-30-20. Score 80%+ for excellent!";
+    if (q.includes("download") || q.includes("csv") || q.includes("export")) return "Downloads: 📄 Check the Tips page for 3 checklists. 📊 The Expenses page has 'Export CSV' for your expense table. 📥 Click any info card to download detailed info as a text file.";
+
+    // Contact
+    if (q.includes("contact") || q.includes("email") || q.includes("reach")) return "Contact us at: 📧 budgetbasics00@gmail.com · 📱 +92 324 2704078 · 📍 Karachi, Pakistan. Or use the Contact page form — messages go directly to our email!";
+
+    // Student specific
+    if (q.includes("student")) return "Student tips: 🎓 Track every rupee, even small ones. 🎓 Save scholarships/allowances first. 🎓 Avoid BNPL for non-essentials. 🎓 Build a 3-month emergency buffer. 🎓 Free yourself from impulse buying with the 48-hour rule.";
+
+    // About
+    if (q.includes("who are you") || q.includes("what are you") || q.includes("your name")) return "I'm BudgetBee 🐝 — an educational AI assistant built into BudgetBasics. My goal is to help you understand budgeting, saving and responsible spending. Part of an Aptech Project Assignment!";
+    if (q.includes("aptech") || q.includes("project")) return "This is a Finance Management Project built as an Aptech Project Assignment. It teaches budgeting, saving, expense tracking and debt awareness through interactive tools.";
+
+    // Fallback
+    return "I can help with: 💰 Budgeting basics, 🎯 50-30-20 rule, ⚖️ Needs vs wants, 💳 Debt & credit, 💵 Interest, 📊 Expense tracking, 💡 Saving tips, or 🖼️ Website navigation. What would you like to learn?";
+}
+function sendAiMessage() {
+    if (!aiInput) return;
+    const q = aiInput.value.trim();
+    if (!q) return;
+    addAiMessage(q, "user");
+    aiInput.value = "";
+    setTimeout(() => addAiMessage(botReply(q), "bot"), 650);
+}
+function useAiSuggestion(t) { if (!aiInput) return; aiInput.value = t; sendAiMessage(); }
+
+/* ESC HANDLER */
+document.addEventListener("keydown", e => {
+    if (e.key === "Escape") { closeAiPanel(); closeMobileNav(); closeInfoModal(); }
+});
+
+/* INIT AUTH LAST */
+initAuth();
+
+console.log("💰 BudgetBasics — Finance Management Project · Aptech Assignment · v5.1");
+console.log("✅ Register button + User chip + Info Modal + Extended Chatbot");
+</script>
+</body>
+</html>
