@@ -2256,9 +2256,7 @@ async function submitContact(event) {
             form.reset();
             showToast("Message sent! ✉️");
         } else { throw new Error("Submission failed"); }
-    } catch (err) {
-        feedback.className = "form-feedback error show";
-        feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Could not send. Email: budgetbasics00@gmail.com';
+ 
     } finally {
         btn.disabled = false;
         btn.innerHTML = originalBtnHTML;
